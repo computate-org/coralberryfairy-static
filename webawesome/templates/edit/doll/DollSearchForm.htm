@@ -1,0 +1,141 @@
+
+{%- macro htmButton_patchDoll() %}<wa-button variant="brand" id="htmButton_patchDoll" data-={{ result. | tojson }}><i slot="start" class="{{ FONTAWESOME_STYLE }} fa-edit "></i>Modify</wa-button>{%- endmacro %}
+
+{%- macro htmFormButton_patchDoll() %}
+          <wa-popup  auto-size="both" placement="top" id="alertButton_patchDoll" duration="5000" closable class="wa-header-l ">
+            <wa-button slot="anchor" variant="brand" slot="footer" type="submit"
+                 id="htmFormButton_patchDoll"
+                >Modify doll</wa-button>
+            <wa-badge class="alertPopup" id="alertPopupButton_patchDoll"></wa-badge>
+          </wa-popup>
+{%- endmacro %}
+
+{%- macro htmForm_patchDoll() %}
+        <wa-dialog with-header with-footer style="--width: 50vw; " id="patchDollDialog" label="Modify doll">
+          <form id="htmForm_patchDoll" class="round-row primary-smart-border-radius ">
+          </form>
+          {{ htmFormButton_patchDoll() }}
+        </wa-dialog>
+{%- endmacro %}
+
+{%- macro htmButton_postDoll() %}<wa-button variant="brand" id="htmButton_postDoll" data-={{ result. | tojson }}><i slot="start" class="{{ FONTAWESOME_STYLE }} fa-file-plus "></i>Create</wa-button>{%- endmacro %}
+
+{%- macro htmFormButton_postDoll() %}
+          <wa-popup  auto-size="both" placement="top" id="alertButton_postDoll" duration="5000" closable class="wa-header-l ">
+            <wa-button slot="anchor" variant="brand" slot="footer" type="submit"
+                 id="htmFormButton_postDoll"
+                >Create a doll</wa-button>
+            <wa-badge class="alertPopup" id="alertPopupButton_postDoll"></wa-badge>
+          </wa-popup>
+{%- endmacro %}
+
+{%- macro htmForm_postDoll() %}
+        <wa-dialog with-header with-footer style="--width: 50vw; " id="postDollDialog" label="Create a doll">
+          <form id="htmForm_postDoll" class="round-row primary-smart-border-radius ">
+            <div>You can override any default values below: </div>
+          </form>
+          {{ htmFormButton_postDoll() }}
+        </wa-dialog>
+{%- endmacro %}
+
+{%- macro htmButton_putimportDoll() %}<wa-button variant="brand" id="htmButton_putimportDoll" data-={{ result. | tojson }}><i slot="start" class="{{ FONTAWESOME_STYLE }} fa-file-import "></i>Import</wa-button>{%- endmacro %}
+
+{%- macro htmFormButton_putimportDoll() %}
+          <wa-popup  auto-size="both" placement="top" id="alertButton_putimportDoll" duration="5000" closable class="wa-header-l ">
+            <wa-button slot="anchor" variant="brand" slot="footer" type="submit"
+                 id="htmFormButton_putimportDoll"
+                >Import dolls</wa-button>
+            <wa-badge class="alertPopup" id="alertPopupButton_putimportDoll"></wa-badge>
+          </wa-popup>
+{%- endmacro %}
+
+{%- macro htmForm_putimportDoll() %}
+        <wa-dialog with-header with-footer style="--width: 50vw; " id="putimportDollDialog" label="Import dolls">
+          <form id="htmForm_putimportDoll" class="round-row primary-smart-border-radius ">
+            <div>
+              <wa-textarea
+                  class="PUTImport_searchList "
+                  style="height: 300px; "
+                  placeholder="{ 'searchList': [ { '': ... , 'saves': [ ... ] }, ... ] }"
+                  >
+              </wa-textarea>
+            </div>
+          </form>
+          {{ htmFormButton_putimportDoll() }}
+        </wa-dialog>
+{%- endmacro %}
+
+{%- macro htmButton_searchpageDoll() %}{%- endmacro %}
+
+{%- macro htmFormButton_searchpageDoll() %}
+          <wa-popup  auto-size="both" placement="top" id="alertButton_searchpageDoll" duration="5000" closable class="wa-header-l ">
+            <wa-button slot="anchor" variant="brand" slot="footer" type="submit"
+                 id="htmFormButton_searchpageDoll"
+                >Search dolls</wa-button>
+            <wa-badge class="alertPopup" id="alertPopupButton_searchpageDoll"></wa-badge>
+          </wa-popup>
+{%- endmacro %}
+
+{%- macro htmForm_searchpageDoll() %}
+        <div with-header with-footer style="--width: 50vw; " id="searchpageDollDialog" label="Search dolls">
+          <div id="htmForm_searchpageDoll" class="round-row primary-smart-border-radius ">
+          </div>
+        </div>
+{%- endmacro %}
+          <div id="htmSearchForm">
+            <wa-scroller>
+              <wa-button-group>
+{% if AUTH_SCOPE_SUPER_ADMIN in scopes %}
+  {% if "PATCH" in scopes %}
+    {% if resultCount >= 1 %}
+                <wa-button variant="brand" id="refreshThisDollGenPage"
+                     onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: ':{{ result. }}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisDollGenPage')); }, function() { addError(document.querySelector('#refreshThisDollGenPage')); }); return false; ">
+                  <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-sync-alt "></i>
+                  refresh
+                </wa-button>
+    {% endif %}
+    {% if resultCount > 0 %}
+                <wa-button variant="brand" id="refreshAllDollGenPage{{ result. | e }}"
+                     onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllDollGenPage{{ result. | e }}')); }, function() { addError(document.querySelector('#refreshAllDollGenPage{{ result. | e }}')); }); "
+                    >
+                  <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrows-rotate"></i>
+                  Refresh all 
+                </wa-button>
+    {% endif %}
+  {% endif %}
+{% endif %}
+{%- if 'PATCH' in scopes %}
+  {%- if resultCount > 0 %}
+    {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
+    {{ htmButton_patchDoll() }}
+    {%- endif %}
+  {%- endif %}
+{%- endif %}
+{%- if 'POST' in scopes %}
+  {%- if resultCount >= 1 %}
+    {{ htmButton_postDoll() }}
+  {%- else %}
+    {{ htmButton_postDoll() }}
+  {%- endif %}
+{%- endif %}
+{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
+  {{ htmButton_putimportDoll() }}
+{%- endif %}
+
+              </wa-button-group>
+            </wa-scroller>
+          </div>
+{%- if 'DELETE' in scopes %}
+    {{ htmForm_patchDoll() }}
+  {%- endif %}
+{%- endif %}
+{%- if 'POST' in scopes %}
+  {%- if resultCount >= 1 %}
+    {{ htmForm_postDoll() }}
+  {%- else %}
+    {{ htmForm_postDoll() }}
+  {%- endif %}
+{%- endif %}
+{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
+  {{ htmForm_putimportDoll() }}
+{%- endif %}

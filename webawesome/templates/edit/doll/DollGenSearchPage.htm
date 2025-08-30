@@ -1,0 +1,268 @@
+{% extends "" %}
+
+{%- block htmTitleBaseResultPage %}
+{%- block htmTitleDollPage %}
+    <title>{% if resultCount == 0 %}no doll found{% else %}dolls{% endif %}</title>
+{%- endblock htmTitleDollPage %}
+{%- endblock htmTitleBaseResultPage %}
+
+{%- block htmStylesBaseResultPage %}
+{{ super() }}
+    <link rel="stylesheet" href="{{ staticBaseUrl }}/css/edit/doll/Doll.css"/>
+{%- block htmStylesDollPage %}
+{%- endblock htmStylesDollPage %}
+{%- endblock htmStylesBaseResultPage %}
+
+{%- block htmStyleBaseResultPage %}
+      :root {
+        --site-results-number-of-columns: 2;
+      }
+{{ super() }}
+{%- block htmStyleDollPage %}
+{%- endblock htmStyleDollPage %}
+{%- endblock htmStyleBaseResultPage %}
+
+{%- block htmScriptsBaseResultPage %}
+{{ super() }}
+{%- block htmScriptsDollPage %}
+    <script src="{{staticBaseUrl}}/js/edit/doll/Doll.js"></script>
+    <script type="module" src="{{staticBaseUrl}}/js/edit/doll/DollSearchPage.js"></script>
+{%- endblock htmScriptsDollPage %}
+{%- endblock htmScriptsBaseResultPage %}
+
+{%- block htmScriptBaseResultPage %}
+{%- block htmScriptDollPage %}
+    <script>
+
+      function jsWebsocketDoll(, vars, $response) {
+{%- block jsWebsocketDollPage %}{%- endblock %}
+      }
+
+      function jsTooltipDoll(e, feature) {
+{%- block jsTooltipDollPage %}{%- endblock %}
+      }
+
+      function htmTooltipDoll(feature, layer) {
+        return `{%- block htmTooltipDollPage %}
+<h3><i class="{{ classIconCssClasses }}  "></i><a href="${quoteattr(feature.properties.editPage)}">${feature.properties.objectTitle}</a></h3>
+{%- endblock htmTooltipDollPage %}`;
+      }
+    </script>
+    <script type="module">
+{% if DEFAULT_MAP_LOCATION is defined %}
+      window.DEFAULT_MAP_LOCATION = { type: 'Point', coordinates: [ {{ DEFAULT_MAP_LOCATION.coordinates[0] }}, {{ DEFAULT_MAP_LOCATION.coordinates[1] }} ]};
+{% endif %}
+{% if DEFAULT_MAP_ZOOM is defined %}
+      window.DEFAULT_MAP_ZOOM = {{ DEFAULT_MAP_ZOOM }};
+{% endif %}
+      window.DEFAULT_ZONE_ID = '{{ defaultZoneId }}';
+      Promise.all([
+        customElements.whenDefined('wa-button')
+        , customElements.whenDefined('wa-input')
+        , customElements.whenDefined('wa-select')
+      ]).then(() => {
+        var l = document.querySelector('.pageForm .listDoll')?.value;
+        if(l)
+          window.listDoll = JSON.parse(l);
+        window.varsFq = JSON.parse('{{ toJsonObjectStringInApostrophes(varsFq) }}');
+        window.varsRange = JSON.parse('{{ toJsonObjectStringInApostrophes(varsRange) }}');
+        window.defaultRangeVar = '{{ defaultRangeVar }}';
+        pageGraphDoll();
+        {% for key, value in varsQ.items() %}
+
+        document.querySelector('#qDoll_{{ key }}')?.addEventListener('wa-{% if var == 'objectSuggest' %}keyup{% else %}change{% endif %}', event => {
+          qChange('Doll', event.target, document.querySelector('#qDollDiv_{{ key }}'));
+        });
+        {% endfor %}
+
+        document.querySelector('#qDoll_rows')?.addEventListener('change', event => {
+          paramChange('Doll', event.target, document.querySelector('#qDollDiv_rows'));
+        });
+
+        document.querySelector('#qDoll_start')?.addEventListener('change', event => {
+          paramChange('Doll', event.target, document.querySelector('#qDollDiv_start'));
+        });
+
+
+        var submitForm_patchDoll = document.querySelector('#htmForm_patchDoll')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_patchDoll')?.addEventListener('click', event => {
+          event.preventDefault();
+          patchDoll(null, document.querySelector('#htmForm_patchDoll'), document.querySelector('#htmFormButton_patchDoll'), event.target.getAttribute('data-'));
+          return false;
+        });
+
+        var submitForm_postDoll = document.querySelector('#htmForm_postDoll')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_postDoll')?.addEventListener('click', event => {
+          event.preventDefault();
+          postDoll(document.querySelector('#htmForm_postDoll')
+          , document.querySelector('#htmFormButton_postDoll')
+          , (json, target) => {
+            window.location.href = json.editPage;
+          });
+          return false;
+        });
+
+        var submitForm_putimportDoll = document.querySelector('#htmForm_putimportDoll')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_putimportDoll')?.addEventListener('click', event => {
+          event.preventDefault();
+          putimportDoll(document.querySelector('#htmForm_putimportDoll'), document.querySelector('#htmFormButton_putimportDoll'));
+          return false;
+        });
+
+        var submitForm_searchpageDoll = document.querySelector('#htmForm_searchpageDoll')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_searchpageDoll')?.addEventListener('click', event => {
+          event.preventDefault();
+          searchpageDoll();
+          return false;
+        });
+{%- block htmScriptInitDollPage %}{%- endblock htmScriptInitDollPage %}
+      });
+    </script>
+{%- endblock htmScriptDollPage %}
+{%- endblock htmScriptBaseResultPage %}
+
+{%- block websocketBaseResultPage %}
+{%- block websocketDollPage %}
+{% if resultCount > 0 %}
+        window.eventBus = new EventBus('/eventbus');
+        window.eventBus.enableReconnect(true);
+        websocketDoll(websocketDollInner);
+{% endif %}
+{%- endblock websocketDollPage %}
+{%- endblock websocketBaseResultPage %}
+
+{%- block htmUrlDollPage %}{{pageUri}}?q={{query.q}}&amp;rows={% if rows is defined %}{{rows}}{% else %}{{pagination.rows}}{% endif %}&amp;rows={% if start is defined %}{{start}}{% else %}{{pagination.start}}{% endif %}{% for item query.fq %}{% if fq == item %}{% else %}&fq={{fq}}:{{val}}{% endif %}{% endfor %}{% for item in query.sort %}{% if sort == item %}{% else %}&sort={{var}} {{order}}{% endif %}{% endfor %}{%- endblock htmUrlDollPage %}
+
+{%- block htmBodyStartBaseResultPage %}
+{{ super() }}
+{%- block htmBodyStartDollPage %}
+{% if resultCount == 0 %}
+        <div class="wa-stack ">
+          <wa-tooltip for="return-to-Doll">back to all dolls</wa-tooltip></wa-tooltip>
+          <wa-breadcrumb>
+            <wa-breadcrumb-item id="return-to-Doll" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="fa-solid fa-reel"></i>
+              all dolls
+            </wa-breadcrumb-item>
+            <wa-breadcrumb-item>
+              no doll found
+            </wa-breadcrumb-item>
+          </wa-breadcrumb>
+          <div class="wa-stack wa-align-items-center ">
+            <div class="wa-heading-3xl ">
+              <i class="fa-solid fa-reel"></i>
+            </div>
+            <span class="wa-heading-m ">no doll found</span>
+            <p class="wa-caption-l ">See the available dolls</p>
+{% include edit/doll/DollSearchForm.htm %}
+          </div>
+        </div>
+{% else %}
+{%- include edit/doll/DollSidebar.htm %}
+{%- include edit/doll/DollSuggestedSearch.htm %}
+          <div class="pageContent ">
+            <form action="/api/product/doll" id="DollForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
+              <input name="focusId" type="hidden"/>
+              <input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{ toJsonObjectStringInApostrophes(pageResponse) }}' type="hidden"/>
+              <input name="listDoll" id="listDoll" class="listDoll"  value='{{ toJsonArrayStringInApostrophes(listDoll) }}' type="hidden"/>
+            </form>
+            <div id="site-calendar-box">
+              <div id="site-calendar"><!-- // --></div>
+            </div>
+            <div class="wa-stack wa-gap-m ">
+              <wa-tooltip for="return-to-Doll">back to all dolls</wa-tooltip>
+              <wa-breadcrumb>
+                <wa-breadcrumb-item id="return-to-Doll" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+                  <i class="fa-solid fa-reel"></i>
+                  all dolls
+                </wa-breadcrumb-item>
+                <wa-breadcrumb-item>
+                  search dolls
+                </wa-breadcrumb-item>
+              </wa-breadcrumb>
+{% include edit/doll/DollSearchForm.htm %}
+{% include edit/doll/DollSearchButtons.htm %}
+{% endif %}
+{%- endblock htmBodyStartDollPage %}
+{%- endblock htmBodyStartBaseResultPage %}
+
+{%- block htmBodyMiddleBaseResultPage %}
+{%- block htmBodyMiddleDollPage %}
+{% if resultCount > 0 %}
+              <div class="wa-stack wa-gap-0 ">
+{% include edit/doll/DollPaginationButtons.htm %}
+                <div class="card-like-thing background-color-surface-border" id="site-results-grid">
+                  <div>
+              <wa-dropdown id="htmDropdown-name">
+                <wa-button variant="brand" slot="trigger" caret>Name</wa-button>
+                <wa-menu>
+                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortDoll_name'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-Doll').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="asc" id="htmDropdown-name-asc">
+                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
+                    sort by Name ascending
+                  </wa-menu-item>
+                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortDoll_name'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-Doll').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="desc" id="htmDropdown-name-desc">
+                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
+                    sort by Name descending
+                  </wa-menu-item>
+                </wa-menu>
+              </wa-dropdown>
+              <wa-dropdown id="htmDropdown-description">
+                <wa-button variant="brand" slot="trigger" caret>product description</wa-button>
+                <wa-menu>
+                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortDoll_description'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-Doll').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="asc" id="htmDropdown-description-asc">
+                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
+                    sort by product description ascending
+                  </wa-menu-item>
+                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortDoll_description'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-Doll').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="desc" id="htmDropdown-description-desc">
+                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
+                    sort by product description descending
+                  </wa-menu-item>
+                </wa-menu>
+              </wa-dropdown>
+                  </div>
+                  {% for item in listDoll%}
+                  <div>
+              <a href="{{ item.displayPage }}">
+                <i class="fa-solid fa-reel"></i>
+              <span>{{ item.name | e }}
+</span>              </a>
+              <a href="{{ item.displayPage }}">
+              <span>{{ item.description | e }}
+</span>              </a>
+                  </div>
+                  {% endfor %}
+              {% if getColumnName is defined %}
+                <div>
+                </div>
+              {% endif %}
+              {% if getColumnDescription is defined %}
+                <div>
+                </div>
+              {% endif %}
+                </div>
+{% include edit/doll/DollPaginationButtons.htm %}
+              </div>
+            </div>
+          </div>
+{% endif %}
+{%- endblock htmBodyMiddleDollPage %}
+{%- endblock htmBodyMiddleBaseResultPage %}
+
+{%- block htmBodyEndBaseResultPage %}
+{%- block htmBodyEndDollPage %}
+{%- include edit/doll/DollLocation.htm %}
+{%- endblock htmBodyEndDollPage %}
+  {{ super() }}
+{%- endblock htmBodyEndBaseResultPage %}

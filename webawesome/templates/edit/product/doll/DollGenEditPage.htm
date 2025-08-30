@@ -1,0 +1,264 @@
+{% extends "en-us/PageLayout.htm" %}
+{%- block htmTitlePageLayout %}
+{%- block htmTitleDollPage %}
+    <title>{{ result.objectTitle }}</title>
+{%- endblock htmTitleDollPage %}
+{%- endblock htmTitlePageLayout %}
+
+{%- block htmStylesPageLayout %}
+{{ super() }}
+    <link rel="stylesheet" href="{{ staticBaseUrl }}/css/product/doll/Doll.css"/>
+{%- block htmStylesDollPage %}
+{%- endblock htmStylesDollPage %}
+{%- endblock htmStylesPageLayout %}
+
+{%- block htmStylePageLayout %}
+      :root {
+        --site-results-number-of-columns: 2;
+      }
+{{ super() }}
+{%- block htmStyleDollPage %}
+{%- endblock htmStyleDollPage %}
+{%- endblock htmStylePageLayout %}
+
+{%- block htmScriptsPageLayout %}
+{{ super() }}
+{%- block htmScriptsDollPage %}
+    <script src="{{staticBaseUrl}}/js/product/doll/Doll.js"></script>
+    <script type="module" src="{{staticBaseUrl}}/js/product/doll/DollSearchPage.js"></script>
+    <script type="module" src="{{staticBaseUrl}}/js/product/doll/DollEditPage.js"></script>
+{%- endblock htmScriptsDollPage %}
+{%- endblock htmScriptsPageLayout %}
+
+{%- block htmScriptPageLayout %}
+{%- block htmScriptDollPage %}
+    <script>
+
+      function jsWebsocketDoll(pageId, vars, $response) {
+{%- block jsWebsocketDollPage %}{%- endblock %}
+      }
+
+      function jsTooltipDoll(e, feature) {
+{%- block jsTooltipDollPage %}{%- endblock %}
+      }
+
+      function htmTooltipDoll(feature, layer) {
+        return `{%- block htmTooltipDollPage %}
+<h3><i class="{{ classIconCssClasses }}  "></i><a href="${quoteattr(feature.properties.editPage)}">${feature.properties.objectTitle}</a></h3>
+{%- endblock htmTooltipDollPage %}`;
+      }
+    </script>
+    <script type="module">
+{% if DEFAULT_MAP_LOCATION is defined %}
+      window.DEFAULT_MAP_LOCATION = { type: 'Point', coordinates: [ {{ DEFAULT_MAP_LOCATION.coordinates[0] }}, {{ DEFAULT_MAP_LOCATION.coordinates[1] }} ]};
+{% endif %}
+{% if DEFAULT_MAP_ZOOM is defined %}
+      window.DEFAULT_MAP_ZOOM = {{ DEFAULT_MAP_ZOOM }};
+{% endif %}
+      window.DEFAULT_ZONE_ID = '{{ defaultZoneId }}';
+      Promise.all([
+        customElements.whenDefined('wa-button')
+        , customElements.whenDefined('wa-input')
+        , customElements.whenDefined('wa-select')
+      ]).then(() => {
+
+        var pageId = {% if result.pageId is defined %}{{ result.pageId | tojson }}{% else %}null{% endif %};
+
+        if(pageId == null) {
+          document.querySelector('#grid-toggle-details')?.addEventListener('click', () => {
+            document.querySelector('#site-results-grid').classList.remove('grid-mode-list', 'grid-mode-card');
+            document.querySelector('#site-results-grid').classList.add('grid-mode-details');
+          });
+          document.querySelector('#grid-toggle-list')?.addEventListener('click', () => {
+            document.querySelector('#site-results-grid').classList.remove('grid-mode-details', 'grid-mode-card');
+            document.querySelector('#site-results-grid').classList.add('grid-mode-list');
+          });
+          document.querySelector('#grid-toggle-card')?.addEventListener('click', () => {
+            document.querySelector('#site-results-grid').classList.remove('grid-mode-details', 'grid-mode-list');
+            document.querySelector('#site-results-grid').classList.add('grid-mode-card');
+          });
+        } else {
+          var o = document.querySelector('.pageForm .result')?.value;
+          if(o)
+            window.result = JSON.parse(o);
+        {% if result.pageId is defined %}
+        {% endif %}
+        }
+        var l = document.querySelector('.pageForm .listDoll')?.value;
+        if(l)
+          window.listDoll = JSON.parse(l);
+        window.varsFq = JSON.parse('{{ toJsonObjectStringInApostrophes(varsFq) }}');
+        window.varsRange = JSON.parse('{{ toJsonObjectStringInApostrophes(varsRange) }}');
+        window.defaultRangeVar = '{{ defaultRangeVar }}';
+        pageGraphDoll();
+        {% for key, value in varsQ.items() %}
+
+        document.querySelector('#qDoll_{{ key }}')?.addEventListener('wa-{% if var == 'objectSuggest' %}keyup{% else %}change{% endif %}', event => {
+          qChange('Doll', event.target, document.querySelector('#qDollDiv_{{ key }}'));
+        });
+        {% endfor %}
+
+        document.querySelector('#qDoll_rows')?.addEventListener('change', event => {
+          paramChange('Doll', event.target, document.querySelector('#qDollDiv_rows'));
+        });
+
+        document.querySelector('#qDoll_start')?.addEventListener('change', event => {
+          paramChange('Doll', event.target, document.querySelector('#qDollDiv_start'));
+        });
+
+
+        var submitForm_patchDoll = document.querySelector('#htmForm_patchDoll')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_patchDoll')?.addEventListener('click', event => {
+          event.preventDefault();
+          patchDoll(null, document.querySelector('#htmForm_patchDoll'), document.querySelector('#htmFormButton_patchDoll'), event.target.getAttribute('data-pageId'));
+          return false;
+        });
+
+        var submitForm_postDoll = document.querySelector('#htmForm_postDoll')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_postDoll')?.addEventListener('click', event => {
+          event.preventDefault();
+          postDoll(document.querySelector('#htmForm_postDoll')
+          , document.querySelector('#htmFormButton_postDoll')
+          , (json, target) => {
+            window.location.href = json.editPage;
+          });
+          return false;
+        });
+
+        var submitForm_deleteDoll = document.querySelector('#htmForm_deleteDoll')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_deleteDoll')?.addEventListener('click', event => {
+          event.preventDefault();
+          deleteDoll(event.target, event.target.getAttribute('data-pageId'));
+          return false;
+        });
+
+        var submitForm_putimportDoll = document.querySelector('#htmForm_putimportDoll')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_putimportDoll')?.addEventListener('click', event => {
+          event.preventDefault();
+          putimportDoll(document.querySelector('#htmForm_putimportDoll'), document.querySelector('#htmFormButton_putimportDoll'));
+          return false;
+        });
+
+        var submitForm_searchpageDoll = document.querySelector('#htmForm_searchpageDoll')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_searchpageDoll')?.addEventListener('click', event => {
+          event.preventDefault();
+          searchpageDoll();
+          return false;
+        });
+
+        var submitForm_deletefilterDoll = document.querySelector('#htmForm_deletefilterDoll')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_deletefilterDoll')?.addEventListener('click', event => {
+          event.preventDefault();
+          deletefilterDoll(event.target);
+          return false;
+        });
+{%- block htmScriptInitDollPage %}{%- endblock htmScriptInitDollPage %}
+      });
+    </script>
+{%- endblock htmScriptDollPage %}
+{%- endblock htmScriptPageLayout %}
+
+{%- block websocketPageLayout %}
+{%- block websocketDollPage %}
+{% if resultCount > 0 %}
+        window.eventBus = new EventBus('/eventbus');
+        window.eventBus.enableReconnect(true);
+        websocketDoll(websocketDollInner);
+{% endif %}
+{%- endblock websocketDollPage %}
+{%- endblock websocketPageLayout %}
+
+{%- block htmUrlDollPage %}{{pageUri}}?q={{query.q}}&amp;rows={% if rows is defined %}{{rows}}{% else %}{{pagination.rows}}{% endif %}&amp;rows={% if start is defined %}{{start}}{% else %}{{pagination.start}}{% endif %}{% for item query.fq %}{% if fq == item %}{% else %}&fq={{fq}}:{{val}}{% endif %}{% endfor %}{% for item in query.sort %}{% if sort == item %}{% else %}&sort={{var}} {{order}}{% endif %}{% endfor %}{%- endblock htmUrlDollPage %}
+
+{%- block htmBodyStartPageLayout %}
+    {{ super() }}
+{%- block htmBodyStartDollPage %}
+{% if resultCount > 0 %}
+          <div class="wa-flank ">
+            <wa-tooltip for="return-to-Doll">back to all dolls</wa-tooltip>
+            <wa-button id="return-to-Doll" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
+              all dolls
+            </wa-button>
+            <h1 class="Page_objectTitle"><i class="fa-solid fa-reel"></i> {{ result.objectTitle | e }}</h1>
+          </div>
+          <div class="margin-block">
+          </div>
+{% include product/doll/DollSearchForm.htm %}
+          <wa-divider></wa-divider>
+{% include product/doll/DollSearchButtons.htm %}
+{% endif %}
+{%- endblock htmBodyStartDollPage %}
+{%- endblock htmBodyStartPageLayout %}
+
+{%- block htmBodyMiddlePageLayout %}
+{%- block htmBodyMiddleDollPage %}
+        <div class="pageContent ">
+{% if resultCount == 0 %}
+        <div class="wa-stack ">
+          <wa-tooltip for="return-to-Doll">back to all dolls</wa-tooltip></wa-tooltip>
+          <wa-breadcrumb>
+            <wa-breadcrumb-item id="return-to-Doll" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="fa-solid fa-reel"></i>
+              all dolls
+            </wa-breadcrumb-item>
+            <wa-breadcrumb-item>
+              no doll found
+            </wa-breadcrumb-item>
+          </wa-breadcrumb>
+          <div class="wa-stack wa-align-items-center ">
+            <div class="wa-heading-3xl ">
+              <i class="fa-solid fa-reel"></i>
+            </div>
+            <span class="wa-heading-m ">no doll found</span>
+            <p class="wa-caption-l ">See the available dolls</p>
+{% include product/doll/DollSearchForm.htm %}
+          </div>
+        </div>
+{% else %}
+{%- include product/doll/DollSidebar.htm %}
+{%- include product/doll/DollSuggestedSearch.htm %}
+{% endif %}
+{%- block htmFormDollPage %}
+          <form action="/api/product/doll" id="DollForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
+{% if result.pageId is defined %}
+            <input name="pageId" class="valuePageId" type="hidden" value="{{ result.pageId }}"/>
+            {% endif %}
+            <input name="focusId" type="hidden"/>
+            <input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{ toJsonObjectStringInApostrophes(pageResponse) }}' type="hidden"/>
+            <input name="result" id="result" class="result"  value='{{ toJsonObjectStringInApostrophes(result) }}' type="hidden"/>
+            <input name="listDoll" id="listDoll" class="listDoll"  value='{{ toJsonArrayStringInApostrophes(listDoll) }}' type="hidden"/>
+          </form>
+  {% if solrId is defined %}
+          {{ htmButton_searchpageDoll() }}
+          {{ htmForm_searchpageDoll() }}
+  {% endif %}
+{%- endblock htmFormDollPage %}
+        </div>
+{%- endblock htmBodyMiddleDollPage %}
+{%- endblock htmBodyMiddlePageLayout %}
+
+{%- block htmBodyEndPageLayout %}
+{%- block htmBodyEndDollPage %}
+{%- include product/doll/DollLocation.htm %}
+{%- endblock htmBodyEndDollPage %}
+      {{ super() }}
+{%- endblock htmBodyEndPageLayout %}
