@@ -156,7 +156,7 @@ function searchSitePageVals(filters, target, success, error) {
 
 
   fetch(
-    '/en-us/api/article?' + filters.map(function(m) { return m.name + '=' + encodeURIComponent(m.value) }).join('&')
+    '/api/article?' + filters.map(function(m) { return m.name + '=' + encodeURIComponent(m.value) }).join('&')
     , {
       headers: {'Content-Type':'application/json; charset=utf-8'}
     }).then(response => {
@@ -195,7 +195,7 @@ function suggestSitePageObjectSuggest($formFilters, $list, target) {
 
 async function getSitePage() {
   fetch(
-    '/en-us/api/article/' + pageId
+    '/api/article/' + pageId
     , {
       headers: {'Content-Type':'application/json; charset=utf-8'}
     }).then(response => {
@@ -617,7 +617,7 @@ function patchSitePageVal(filters, v, val, target, success, error) {
 
 function patchSitePageVals(filters, vals, target, success, error) {
   fetch(
-    '/en-us/api/article?' + filters.map(function(m) { return m.name + '=' + encodeURIComponent(m.value) }).join('&')
+    '/api/article?' + filters.map(function(m) { return m.name + '=' + encodeURIComponent(m.value) }).join('&')
     , {
       headers: {'Content-Type':'application/json; charset=utf-8'}
       , method: 'PATCH'
@@ -733,7 +733,7 @@ async function postSitePage($formValues, target, success, error) {
     vals['relatedArticleIds'] = valueRelatedArticleIds;
 
   fetch(
-    '/en-us/api/article'
+    '/api/article'
     , {
       headers: {'Content-Type':'application/json; charset=utf-8'}
       , method: 'POST'
@@ -752,7 +752,7 @@ async function postSitePage($formValues, target, success, error) {
 
 function postSitePageVals(vals, target, success, error) {
   fetch(
-    '/en-us/api/article'
+    '/api/article'
     , {
       headers: {'Content-Type':'application/json; charset=utf-8'}
       , method: 'POST'
@@ -779,7 +779,7 @@ async function putimportSitePage($formValues, target, pageId, success, error) {
 
 function putimportSitePageVals(json, target, success, error) {
   fetch(
-    '/en-us/api/article-import'
+    '/api/article-import'
     , {
       headers: {'Content-Type':'application/json; charset=utf-8'}
       , method: 'PUT'

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ SITE_LOCALE }}" class="wa-{{ userSiteTheme | default(SITE_THEME) }} wa-theme-{{ userWebComponentsTheme | default('default') }} ">
+<html lang="{{ SITE_LOCALE }}" class="wa-{{ userSiteTheme | default(SITE_THEME) }} wa-theme-{{ userWebComponentsTheme | default('default') }} wa-brand-pink ">
   <head>
 {%- block htmHeadPageLayout %}
     <meta charset="UTF-8" />
@@ -25,7 +25,7 @@
     <title>{{ SITE_DISPLAY_NAME }}</title>
 {%- endblock htmTitlePageLayout %}
 {%- block htmStylesPageLayout %}
-    <link rel="icon" href="{{ STATIC_BASE_URL }}/favicon.svg" />
+    <link rel="icon" href="{{ STATIC_BASE_URL }}/logo/coralberry-c.svg" />
     {{ WEB_COMPONENTS_CSS }}
     <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/styles/webawesome.css" />
     <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/styles/themes/{{ userWebComponentsTheme | default('tailspin') }}.css" />
@@ -115,56 +115,72 @@
     <script>
 {%- block websocketPageLayout %}{%- endblock websocketPageLayout %}
     </script>
+    <script type="module">
+      const userDialog = document.querySelector('#user-dialog');
+      const userAvatar = document.querySelector('#user-avatar');
+      userAvatar.addEventListener('click', () => (userDialog.open = true));
+    </script>
    </head>
   <body class="wa-body-{{ userFontSize }} wa-size-{{ userFontSize }} wa-cloak ">
     <wa-page>
 {%- block htmBodyPageLayout %}
 {%- block htmBodyStartPageLayout %}
-      <!-- <nav slot="navigation">
-          <div class="display-flex-center ">
-            <a href="/">
-              <img id="site-aside-left-img-logo" src="{{ STATIC_BASE_URL }}{{ SITE_LOGO_URI }}"/>
-            </a>
-          </div>
-          <div class="wa-cluster " style="justify-content: center;">
-            <wa-button style="font-size: var(--wa-font-size-2xl); color: inherit;" label="View our source code on GitHub" href="https://github.com/{{ GITHUB_ORG }}/{{ SITE_NAME }}" target="_blank">
-              <i slot="start" class="fa-brands fa-github"></i>
+      <header slot="header" class="display-block" id="header">
+        <nav class="wa-cluster justify-content-space-around">
+          <wa-button data-toggle-nav variant="brand" label="open menu">
+            <i class="fa-thin  fa-bars"></i>
+          </wa-button>
+          <a href="/" class="wa-cluster">
+            <img class="logo" src="{{ STATIC_BASE_URL }}/logo/coralberry-fairy-{{ userSiteTheme | default(SITE_THEME) }}-v2.svg"/>
+          </a>
+          <div class="wa-cluster">
+            <wa-button variant="brand" appearance="plain" href="{{ SITE_BASE_URL }}">
+              <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-home"></i>
+              Home
             </wa-button>
-            <wa-button style="font-size: var(--wa-font-size-2xl); color: inherit;" label="Share with email" href="mailto:{{ MAILING_LIST_EMAIL }}" target="_blank">
-              <i slot="start" class="fa-thin  fa-envelope-open"></i>
+            <wa-button variant="brand" appearance="filled outlined" id="site-aside-left-model-button-Doll" href="{{ SITE_BASE_URL }}/search/doll">
+              <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-reel"></i>
+              Dolls
+            </wa-button>
+            <wa-button variant="brand" appearance="plain" id="site-aside-left-model-button-SitePage" href="{{ SITE_BASE_URL }}/search/article">
+              <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-newspaper"></i>
+              Articles
             </wa-button>
           </div>
-          <div class="wa-stack ">
-            <div>
+          <div class="wa-cluster">
+            <wa-popup placement="bottom-start" id="siteSearchDropdown">
+              <wa-input slot="anchor" placeholder="Search" id="siteSearchInput">
+                <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-magnifying-glass"></i>
+              </wa-input>
+              <div id="siteSearchDropdownMenu">
+              </div>
+            </wa-popup>
 {%- if userName is defined %}
-              <wa-details>
-                <div slot="summary">
-                  <wa-avatar label="user"></wa-avatar>
-                  user: {{userName}}
-                </div>
-                <div>{{ userFullName }}</div>
-                <div>{{ userEmail }}</div>
-                <wa-tooltip for="site-button-user-page">see or change your user profile</wa-tooltip>
-                <wa-tooltip for="site-button-logout" placement="right">sign out</wa-tooltip>
-                <div>
-                  <wa-button id="site-button-user-page" variant="brand" href="{{ SITE_BASE_URL }}/en-us/edit/user/{{ userId }}" label="see or change your user profile">
-                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-house-user"></i>
-                    <span>my user page</span>
-                  </wa-button>
-                  <wa-button id="site-button-logout" variant="brand" href="{{ logoutUrl }}" label="sign out">
-                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-person-from-portal"></i>
-                    <span>sign out</span>
-                  </wa-button>
-                </div>
+            <wa-dialog id="user-dialog" label="user: {{ userName }}">
+              <p>Full Name: <b>{{ userFullName }}</b></p>
+              <p>Email: <b>{{ userEmail }}</b></p>
+              <wa-tooltip for="site-button-user-page">see or change your user profile</wa-tooltip>
+              <wa-tooltip for="site-button-logout" placement="right">sign out</wa-tooltip>
+              <p class="wa-cluster justify-content-center">
+                <wa-button id="site-button-user-page" variant="brand" href="{{ SITE_BASE_URL }}/edit/user/{{ userId }}" label="see or change your user profile">
+                  <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-house-user"></i>
+                  <span>my user page</span>
+                </wa-button>
+                <wa-button id="site-button-logout" variant="brand" href="{{ logoutUrl }}" label="sign out">
+                  <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-person-from-portal"></i>
+                  <span>sign out</span>
+                </wa-button>
+              </p>
+
+              <div class="wa-stack">
                 <wa-details summary="User groups" open="true">
-                  <div class="wa-stack ">
-                    <div>
-                      {% for group in userGroups %}
-                      <wa-badge variant="success">{{ group }}</wa-badge>
-                      {% endfor %}
-                    </div>
+                  <div class="">
+                    {% for group in userGroups %}
+                    <wa-badge variant="success">{{ group }}</wa-badge>
+                    {% endfor %}
                   </div>
                 </wa-details>
+
                 <wa-details summary="Current scopes" open="true">
                   <div class="wa-stack ">
                     <div>
@@ -177,112 +193,19 @@
                     </div>
                   </div>
                 </wa-details>
-              </wa-details>
+              </div>
+            </wa-dialog>
+            <wa-tooltip for="user-avatar">{{ userName }}</wa-tooltip>
+            <wa-avatar id="user-avatar" label="user settings"></wa-avatar>
 {%- else %}
-              <wa-button variant="brand" href="{{ SITE_BASE_URL }}/en-us/search/user">
-                <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-person-to-portal"></i> login
-              </wa-button>
-{%- endif %}
-            </div>
-            <div>
-              <wa-button style="width: 100%; " variant="brand" id="site-aside-left-model-button-SitePage" href="{{ SITE_BASE_URL }}/en-us/search/article">
-                <i slot="start" class="fa-duotone fa-regular fa-newspaper"></i>
-                articles
-              </wa-button>
-              <wa-button style="width: 100%; " variant="brand" id="site-aside-left-model-button-Doll" href="{{ SITE_BASE_URL }}/product/doll">
-                <i slot="start" class="fa-solid fa-reel"></i>
-                dolls
-              </wa-button>
-            </div>
-          </div>
-      </nav> -->
-      <header slot="header" class="flex justify-content-space-around ">
-        <wa-button data-toggle-nav variant="brand" label="open menu">
-          <i slot="start" class="fa-thin  fa-bars"></i>
-        </wa-button>
-        <div class="display-flex-center ">
-          <a href="/">
-            <img class="logo" src="{{ STATIC_BASE_URL }}{{ SITE_LOGO_URI }}"/>
-          </a>
-        </div>
-        <nav slot="navigation" class="wa-cluster">
-          <!-- <div class="wa-cluster " style="justify-content: center;"> -->
-            <!-- <wa-button style="font-size: var(--wa-font-size-2xl); color: inherit;" label="View our source code on GitHub" href="https://github.com/{{ GITHUB_ORG }}/{{ SITE_NAME }}" target="_blank">
-              <i slot="start" class="fa-brands fa-github"></i>
+            <wa-button variant="brand" href="{{ SITE_BASE_URL }}/search/user">
+              <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-person-to-portal"></i> login
             </wa-button>
-            <wa-button style="font-size: var(--wa-font-size-2xl); color: inherit;" label="Share with email" href="mailto:{{ MAILING_LIST_EMAIL }}" target="_blank">
-              <i slot="start" class="fa-thin  fa-envelope-open"></i>
-            </wa-button> -->
-          <!-- </div> -->
-          <!-- <div> -->
-{%- if userName is defined %}
-          <wa-details>
-            <div slot="summary">
-              <wa-avatar label="user"></wa-avatar>
-              user: {{userName}}
-            </div>
-            <div>{{ userFullName }}</div>
-            <div>{{ userEmail }}</div>
-            <wa-tooltip for="site-button-user-page">see or change your user profile</wa-tooltip>
-            <wa-tooltip for="site-button-logout" placement="right">sign out</wa-tooltip>
-            <div>
-              <wa-button id="site-button-user-page" variant="brand" href="{{ SITE_BASE_URL }}/en-us/edit/user/{{ userId }}" label="see or change your user profile">
-                <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-house-user"></i>
-                <span>my user page</span>
-              </wa-button>
-              <wa-button id="site-button-logout" variant="brand" href="{{ logoutUrl }}" label="sign out">
-                <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-person-from-portal"></i>
-                <span>sign out</span>
-              </wa-button>
-            </div>
-            <wa-details summary="User groups" open="true">
-              <div class="wa-stack ">
-                <div>
-                  {% for group in userGroups %}
-                  <wa-badge variant="success">{{ group }}</wa-badge>
-                  {% endfor %}
-                </div>
-              </div>
-            </wa-details>
-            <wa-details summary="Current scopes" open="true">
-              <div class="wa-stack ">
-                <div>
-                  <wa-tag variant="neutral">{{ pageUri }}</wa-tag>
-                </div>
-                <div>
-                  {% for scope in scopes %}
-                  <wa-badge variant="success">{{ scope }}</wa-badge>
-                  {% endfor %}
-                </div>
-              </div>
-            </wa-details>
-          </wa-details>
-{%- else %}
-          <wa-button variant="brand" href="{{ SITE_BASE_URL }}/en-us/search/user">
-            <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-person-to-portal"></i> login
-          </wa-button>
 {%- endif %}
-          <!-- <div> -->
-          <wa-button variant="brand" id="site-aside-left-model-button-SitePage" href="{{ SITE_BASE_URL }}/en-us/search/article">
-            <i slot="start" class="fa-duotone fa-regular fa-newspaper"></i>
-            articles
-          </wa-button>
-          <wa-button variant="brand" id="site-aside-left-model-button-Doll" href="{{ SITE_BASE_URL }}/product/doll">
-            <i slot="start" class="fa-solid fa-reel"></i>
-            dolls
-          </wa-button>
-          <!-- </div> -->
-          <!-- </div> -->
-          <wa-popup placement="bottom-start" id="siteSearchDropdown">
-            <wa-input slot="anchor" placeholder="search" id="siteSearchInput">
-              <i slot="start" class="fa-thin  fa-magnifying-glass"></i>
-            </wa-input>
-            <div id="siteSearchDropdownMenu">
-            </div>
-          </wa-popup>
+          </div>
         </nav>
       </header>
-      <main class="wa-stack ">
+      <main id="main-content">
         <wa-drawer id="warnings-drawer" label="Warnings">
           <div id="warnings-drawer-stack" class="wa-stack ">
           </div>
@@ -294,31 +217,41 @@
         </div>
 {%- endblock htmBodyMiddlePageLayout %}
 {%- block htmBodyEndPageLayout %}
-        <footer class="no-gradient text-center">
+        <footer class="wa-cluster justify-content-center">
           {% if GITHUB_ORG is defined %}
-          <wa-button href="https://github.com/{{ GITHUB_ORG }}/{{ SITE_NAME }}" target="_blank" appearance="filled outlined" class="tile">
-            <div class="wa-cluster" style="gap: 1ch;">
+          <wa-button class="tile" href="https://github.com/{{ GITHUB_ORG }}/{{ SITE_NAME }}" target="_blank" appearance="filled">
+            <div>
               <span>This site is</span>
-              <i class="fa-brands fa-github fa-xl"></i>
-              <b>open source</b>
+              <b class="no-wrap">
+                <i class="fa-brands fa-github fa-xl"></i>
+                <b>open source</b>
+              </b>
             </div>
           </wa-button>
           {% endif %}
-          <wa-button href="https://www.computate.org/" target="_blank" id="footer-generated-by" appearance="filled outlined" class="tile">
-            <div class="wa-cluster" style="gap: 1ch;">
+          <wa-button class="tile" href="https://www.computate.org/" target="_blank" id="footer-generated-by" appearance="accent" variant="brand">
+            <div class="wa-cluster">
               <span>Generated with </span>
-              <img class="footer-img" style="font-weight: var(--wa-font-weight-bold);" src="{{ STATIC_BASE_URL }}/svg/computate-keys.svg" alt="Computate"/>
+              <b class="wa-cluster"><img class="footer-img" style="font-weight: var(--wa-font-weight-bold);" src="{{ STATIC_BASE_URL }}/logo/computate-keys.svg" alt="Computate"/></b>
             </div>
           </wa-button>
           {% if SITE_POWERED_BY_URL is defined %}
-          <wa-button href="{{ SITE_POWERED_BY_URL }}" target="_blank" id="footer-powered-by" appearance="filled outlined" class="tile">
-            <div class="wa-cluster" style="gap: 1ch;">
+          <wa-button class="tile" href="{{ SITE_POWERED_BY_URL }}" target="_blank" id="footer-powered-by" appearance="filled">
+            <div>
               <span>Powered by </span>
-              <i class="fa-brands fa-redhat fa-xl" style="color: #ff0000;"></i>
-              <b>{{ SITE_POWERED_BY_NAME | e }}</b>
+              <b class="no-wrap">
+                <i class="fa-brands fa-redhat fa-xl" style="color: #ff0000;"></i>
+                <span>{{ SITE_POWERED_BY_NAME | e }}</span>
+              </b>
             </div>
           </wa-button>
           {% endif %}
+          <wa-button class="tile" appearance="filled" label="Share with email" href="mailto:{{ MAILING_LIST_EMAIL }}" target="_blank">
+            <div>
+              <i class="{{ FONTAWESOME_STYLE }} fa-envelope-open fa-xl"></i>
+              <span>Coralberry Email Group</span>
+            </div>
+          </wa-button>
         </footer>
       </main>
     </wa-page>

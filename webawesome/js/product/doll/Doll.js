@@ -152,7 +152,7 @@ function suggestDollObjectSuggest($formFilters, $list, target) {
     if($list) {
       $list.innerHTML = '';
       data['list'].forEach((o, i) => {
-        var $i = document.querySelector('<i class="fa-solid fa-reel"></i>');
+        var $i = document.querySelector('<i class="{{ FONTAWESOME_STYLE }} fa-reel"></i>');
         var $span = document.createElement('span');        $span.setAttribute('class', '');        $span.innerText = o['objectTitle'];
         var $li = document.createElement('li');
         var $a = document.createElement('a').setAttribute('href', o['editPage']);
@@ -789,7 +789,7 @@ async function websocketDoll(success) {
       $header.setAttribute('class', 'w3-container fa- ');
       $header.setAttribute('id', 'header-' + pageId);
       var iTemplate = document.createElement('template');
-      iTemplate.innerHTML = '<i class="fa-solid fa-reel"></i>';
+      iTemplate.innerHTML = '<i class="{{ FONTAWESOME_STYLE }} fa-reel"></i>';
       var $i = iTemplate.content;
       var $headerSpan = document.createElement('span');
       $headerSpan.setAttribute('class', '');

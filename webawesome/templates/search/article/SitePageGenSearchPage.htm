@@ -1,13 +1,14 @@
 {% extends "en-us/PageLayout.htm" %}
+
 {%- block htmTitlePageLayout %}
 {%- block htmTitleSitePagePage %}
-    <title>{{ result.objectTitle }}</title>
+    <title>{% if resultCount == 0 %}no article found{% else %}articles{% endif %}</title>
 {%- endblock htmTitleSitePagePage %}
 {%- endblock htmTitlePageLayout %}
 
 {%- block htmStylesPageLayout %}
 {{ super() }}
-    <link rel="stylesheet" href="{{ staticBaseUrl }}/css/en-us/search/article/SitePage.css"/>
+    <link rel="stylesheet" href="{{ staticBaseUrl }}/css/search/article/SitePage.css"/>
 {%- block htmStylesSitePagePage %}
 {%- endblock htmStylesSitePagePage %}
 {%- endblock htmStylesPageLayout %}
@@ -24,9 +25,8 @@
 {%- block htmScriptsPageLayout %}
 {{ super() }}
 {%- block htmScriptsSitePagePage %}
-    <script src="{{staticBaseUrl}}/js/en-us/search/article/SitePage.js"></script>
-    <script type="module" src="{{staticBaseUrl}}/js/en-us/search/article/SitePageSearchPage.js"></script>
-    <script type="module" src="{{staticBaseUrl}}/js/en-us/search/article/SitePageEditPage.js"></script>
+    <script src="{{staticBaseUrl}}/js/search/article/SitePage.js"></script>
+    <script type="module" src="{{staticBaseUrl}}/js/search/article/SitePageSearchPage.js"></script>
 {%- endblock htmScriptsSitePagePage %}
 {%- endblock htmScriptsPageLayout %}
 
@@ -169,29 +169,8 @@
 {%- block htmUrlSitePagePage %}{{pageUri}}?q={{query.q}}&amp;rows={% if rows is defined %}{{rows}}{% else %}{{pagination.rows}}{% endif %}&amp;rows={% if start is defined %}{{start}}{% else %}{{pagination.start}}{% endif %}{% for item query.fq %}{% if fq == item %}{% else %}&fq={{fq}}:{{val}}{% endif %}{% endfor %}{% for item in query.sort %}{% if sort == item %}{% else %}&sort={{var}} {{order}}{% endif %}{% endfor %}{%- endblock htmUrlSitePagePage %}
 
 {%- block htmBodyStartPageLayout %}
-    {{ super() }}
+{{ super() }}
 {%- block htmBodyStartSitePagePage %}
-{% if resultCount > 0 %}
-          <div class="wa-flank ">
-            <wa-tooltip for="return-to-SitePage">back to all articles</wa-tooltip>
-            <wa-button id="return-to-SitePage" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
-              all articles
-            </wa-button>
-            <h1 class="Page_objectTitle"><i class="{{ FONTAWESOME_STYLE }} fa-newspaper"></i> {{ result.objectTitle | e }}</h1>
-          </div>
-          <div class="margin-block">
-          </div>
-{% include en-us/search/article/SitePageSearchForm.htm %}
-          <wa-divider></wa-divider>
-{% include en-us/search/article/SitePageSearchButtons.htm %}
-{% endif %}
-{%- endblock htmBodyStartSitePagePage %}
-{%- endblock htmBodyStartPageLayout %}
-
-{%- block htmBodyMiddlePageLayout %}
-{%- block htmBodyMiddleSitePagePage %}
-        <div class="pageContent ">
 {% if resultCount == 0 %}
         <div class="wa-stack ">
           <wa-tooltip for="return-to-SitePage">back to all articles</wa-tooltip></wa-tooltip>
@@ -210,35 +189,103 @@
             </div>
             <span class="wa-heading-m ">no article found</span>
             <p class="wa-caption-l ">Read the latest articles to learn more</p>
-{% include en-us/search/article/SitePageSearchForm.htm %}
+{% include search/article/SitePageSearchForm.htm %}
           </div>
         </div>
 {% else %}
-{%- include en-us/search/article/SitePageSidebar.htm %}
-{%- include en-us/search/article/SitePageSuggestedSearch.htm %}
+{%- include search/article/SitePageSidebar.htm %}
+{%- include search/article/SitePageSuggestedSearch.htm %}
+          <div class="pageContent ">
+            <form action="/api/article" id="SitePageForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
+              <input name="focusId" type="hidden"/>
+              <input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{ toJsonObjectStringInApostrophes(pageResponse) }}' type="hidden"/>
+              <input name="listSitePage" id="listSitePage" class="listSitePage"  value='{{ toJsonArrayStringInApostrophes(listSitePage) }}' type="hidden"/>
+            </form>
+            <div id="site-calendar-box">
+              <div id="site-calendar"><!-- // --></div>
+            </div>
+            <div class="wa-stack wa-gap-m ">
+              <wa-tooltip for="return-to-SitePage">back to all articles</wa-tooltip>
+              <wa-breadcrumb>
+                <wa-breadcrumb-item id="return-to-SitePage" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+                  <i class="{{ FONTAWESOME_STYLE }} fa-newspaper"></i>
+                  all articles
+                </wa-breadcrumb-item>
+                <wa-breadcrumb-item>
+                  search articles
+                </wa-breadcrumb-item>
+              </wa-breadcrumb>
+{% include search/article/SitePageSearchForm.htm %}
+{% include search/article/SitePageSearchButtons.htm %}
 {% endif %}
-{%- block htmFormSitePagePage %}
-          <form action="/en-us/api/article" id="SitePageForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
-{% if result.pageId is defined %}
-            <input name="pageId" class="valuePageId" type="hidden" value="{{ result.pageId }}"/>
-            {% endif %}
-            <input name="focusId" type="hidden"/>
-            <input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{ toJsonObjectStringInApostrophes(pageResponse) }}' type="hidden"/>
-            <input name="result" id="result" class="result"  value='{{ toJsonObjectStringInApostrophes(result) }}' type="hidden"/>
-            <input name="listSitePage" id="listSitePage" class="listSitePage"  value='{{ toJsonArrayStringInApostrophes(listSitePage) }}' type="hidden"/>
-          </form>
-  {% if solrId is defined %}
-          {{ htmButton_searchpageSitePage() }}
-          {{ htmForm_searchpageSitePage() }}
-  {% endif %}
-{%- endblock htmFormSitePagePage %}
-        </div>
+{%- endblock htmBodyStartSitePagePage %}
+{%- endblock htmBodyStartPageLayout %}
+
+{%- block htmBodyMiddlePageLayout %}
+{%- block htmBodyMiddleSitePagePage %}
+{% if resultCount > 0 %}
+              <div class="wa-stack wa-gap-0 ">
+{% include search/article/SitePagePaginationButtons.htm %}
+                <div class="card-like-thing background-color-surface-border" id="site-results-grid">
+                  <div>
+              <wa-dropdown id="htmDropdown-name">
+                <wa-button variant="brand" slot="trigger" caret>title</wa-button>
+                <wa-menu>
+                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortSitePage_name'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-SitePage').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="asc" id="htmDropdown-name-asc">
+                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
+                    sort by title ascending
+                  </wa-menu-item>
+                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortSitePage_name'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-SitePage').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="desc" id="htmDropdown-name-desc">
+                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
+                    sort by title descending
+                  </wa-menu-item>
+                </wa-menu>
+              </wa-dropdown>
+              <wa-dropdown id="htmDropdown-description">
+                <wa-button variant="brand" slot="trigger" caret>description</wa-button>
+                <wa-menu>
+                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortSitePage_description'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-SitePage').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="asc" id="htmDropdown-description-asc">
+                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
+                    sort by description ascending
+                  </wa-menu-item>
+                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortSitePage_description'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-SitePage').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="desc" id="htmDropdown-description-desc">
+                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
+                    sort by description descending
+                  </wa-menu-item>
+                </wa-menu>
+              </wa-dropdown>
+                  </div>
+                  {% for item in listSitePage%}
+                  <div>
+              <a href="{{ item.displayPage }}">
+                <i class="{{ FONTAWESOME_STYLE }} fa-newspaper"></i>
+              <span>{{ item.name | e }}
+</span>              </a>
+              <a href="{{ item.displayPage }}">
+              <span>{{ item.description | e }}
+</span>              </a>
+                  </div>
+                  {% endfor %}
+              {% if getColumnName is defined %}
+                <div>
+                </div>
+              {% endif %}
+              {% if getColumnDescription is defined %}
+                <div>
+                </div>
+              {% endif %}
+                </div>
+{% include search/article/SitePagePaginationButtons.htm %}
+              </div>
+            </div>
+          </div>
+{% endif %}
 {%- endblock htmBodyMiddleSitePagePage %}
 {%- endblock htmBodyMiddlePageLayout %}
 
 {%- block htmBodyEndPageLayout %}
 {%- block htmBodyEndSitePagePage %}
-{%- include en-us/search/article/SitePageLocation.htm %}
+{%- include search/article/SitePageLocation.htm %}
 {%- endblock htmBodyEndSitePagePage %}
-      {{ super() }}
+  {{ super() }}
 {%- endblock htmBodyEndPageLayout %}

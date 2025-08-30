@@ -7,7 +7,7 @@
 
 {%- block htmStylesPageLayout %}
 {{ super() }}
-    <link rel="stylesheet" href="{{ staticBaseUrl }}/css/en-us/search/article/SitePage.css"/>
+    <link rel="stylesheet" href="{{ staticBaseUrl }}/css/search/article/SitePage.css"/>
 {%- block htmStylesSitePagePage %}
 {%- endblock htmStylesSitePagePage %}
 {%- endblock htmStylesPageLayout %}
@@ -24,9 +24,9 @@
 {%- block htmScriptsPageLayout %}
 {{ super() }}
 {%- block htmScriptsSitePagePage %}
-    <script src="{{staticBaseUrl}}/js/en-us/search/article/SitePage.js"></script>
-    <script type="module" src="{{staticBaseUrl}}/js/en-us/search/article/SitePageSearchPage.js"></script>
-    <script type="module" src="{{staticBaseUrl}}/js/en-us/search/article/SitePageEditPage.js"></script>
+    <script src="{{staticBaseUrl}}/js/search/article/SitePage.js"></script>
+    <script type="module" src="{{staticBaseUrl}}/js/search/article/SitePageSearchPage.js"></script>
+    <script type="module" src="{{staticBaseUrl}}/js/search/article/SitePageEditPage.js"></script>
 {%- endblock htmScriptsSitePagePage %}
 {%- endblock htmScriptsPageLayout %}
 
@@ -182,9 +182,9 @@
           </div>
           <div class="margin-block">
           </div>
-{% include en-us/search/article/SitePageSearchForm.htm %}
+{% include search/article/SitePageSearchForm.htm %}
           <wa-divider></wa-divider>
-{% include en-us/search/article/SitePageSearchButtons.htm %}
+{% include search/article/SitePageSearchButtons.htm %}
 {% endif %}
 {%- endblock htmBodyStartSitePagePage %}
 {%- endblock htmBodyStartPageLayout %}
@@ -210,15 +210,15 @@
             </div>
             <span class="wa-heading-m ">no article found</span>
             <p class="wa-caption-l ">Read the latest articles to learn more</p>
-{% include en-us/search/article/SitePageSearchForm.htm %}
+{% include search/article/SitePageSearchForm.htm %}
           </div>
         </div>
 {% else %}
-{%- include en-us/search/article/SitePageSidebar.htm %}
-{%- include en-us/search/article/SitePageSuggestedSearch.htm %}
+{%- include search/article/SitePageSidebar.htm %}
+{%- include search/article/SitePageSuggestedSearch.htm %}
 {% endif %}
 {%- block htmFormSitePagePage %}
-          <form action="/en-us/api/article" id="SitePageForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
+          <form action="/api/article" id="SitePageForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
 {% if result.pageId is defined %}
             <input name="pageId" class="valuePageId" type="hidden" value="{{ result.pageId }}"/>
             {% endif %}
@@ -238,7 +238,7 @@
 
 {%- block htmBodyEndPageLayout %}
 {%- block htmBodyEndSitePagePage %}
-{%- include en-us/search/article/SitePageLocation.htm %}
+{%- include search/article/SitePageLocation.htm %}
 {%- endblock htmBodyEndSitePagePage %}
       {{ super() }}
 {%- endblock htmBodyEndPageLayout %}

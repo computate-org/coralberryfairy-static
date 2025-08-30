@@ -8,7 +8,7 @@
 
 {%- block htmStylesPageLayout %}
 {{ super() }}
-    <link rel="stylesheet" href="{{ staticBaseUrl }}/css/product/doll/Doll.css"/>
+    <link rel="stylesheet" href="{{ staticBaseUrl }}/css/search/doll/Doll.css"/>
 {%- block htmStylesDollPage %}
 {%- endblock htmStylesDollPage %}
 {%- endblock htmStylesPageLayout %}
@@ -25,8 +25,8 @@
 {%- block htmScriptsPageLayout %}
 {{ super() }}
 {%- block htmScriptsDollPage %}
-    <script src="{{staticBaseUrl}}/js/product/doll/Doll.js"></script>
-    <script type="module" src="{{staticBaseUrl}}/js/product/doll/DollSearchPage.js"></script>
+    <script src="{{staticBaseUrl}}/js/search/doll/Doll.js"></script>
+    <script type="module" src="{{staticBaseUrl}}/js/search/doll/DollSearchPage.js"></script>
 {%- endblock htmScriptsDollPage %}
 {%- endblock htmScriptsPageLayout %}
 
@@ -209,14 +209,14 @@
             </div>
             <span class="wa-heading-m ">no doll found</span>
             <p class="wa-caption-l ">See the available dolls</p>
-{% include product/doll/DollSearchForm.htm %}
+{% include search/doll/DollSearchForm.htm %}
           </div>
         </div>
 {% else %}
-{%- include product/doll/DollSidebar.htm %}
-{%- include product/doll/DollSuggestedSearch.htm %}
+{%- include search/doll/DollSidebar.htm %}
+{%- include search/doll/DollSuggestedSearch.htm %}
           <div class="pageContent ">
-            <form action="/api/product/doll" id="DollForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
+            <form action="/api/doll" id="DollForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
               <input name="focusId" type="hidden"/>
               <input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{ toJsonObjectStringInApostrophes(pageResponse) }}' type="hidden"/>
               <input name="listDoll" id="listDoll" class="listDoll"  value='{{ toJsonArrayStringInApostrophes(listDoll) }}' type="hidden"/>
@@ -235,8 +235,8 @@
                   search dolls
                 </wa-breadcrumb-item>
               </wa-breadcrumb>
-{% include product/doll/DollSearchForm.htm %}
-{% include product/doll/DollSearchButtons.htm %}
+{% include search/doll/DollSearchForm.htm %}
+{% include search/doll/DollSearchButtons.htm %}
 {% endif %}
 {%- endblock htmBodyStartDollPage %}
 {%- endblock htmBodyStartPageLayout %}
@@ -245,7 +245,7 @@
 {%- block htmBodyMiddleDollPage %}
 {% if resultCount > 0 %}
               <div class="wa-stack wa-gap-0 ">
-{% include product/doll/DollPaginationButtons.htm %}
+{% include search/doll/DollPaginationButtons.htm %}
                 <div class="card-like-thing background-color-surface-border" id="site-results-grid">
                   <div>
               <wa-dropdown id="htmDropdown-name">
@@ -295,7 +295,7 @@
                 </div>
               {% endif %}
                 </div>
-{% include product/doll/DollPaginationButtons.htm %}
+{% include search/doll/DollPaginationButtons.htm %}
               </div>
             </div>
           </div>
@@ -305,7 +305,7 @@
 
 {%- block htmBodyEndPageLayout %}
 {%- block htmBodyEndDollPage %}
-{%- include product/doll/DollLocation.htm %}
+{%- include search/doll/DollLocation.htm %}
 {%- endblock htmBodyEndDollPage %}
   {{ super() }}
 {%- endblock htmBodyEndPageLayout %}

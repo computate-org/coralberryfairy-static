@@ -1,14 +1,13 @@
 {% extends "en-us/PageLayout.htm" %}
-
 {%- block htmTitlePageLayout %}
 {%- block htmTitleDollPage %}
-    <title>{% if resultCount == 0 %}no doll found{% else %}dolls{% endif %}</title>
+    <title>{{ result.objectTitle }}</title>
 {%- endblock htmTitleDollPage %}
 {%- endblock htmTitlePageLayout %}
 
 {%- block htmStylesPageLayout %}
 {{ super() }}
-    <link rel="stylesheet" href="{{ staticBaseUrl }}/css/product/doll/Doll.css"/>
+    <link rel="stylesheet" href="{{ staticBaseUrl }}/css/search/doll/Doll.css"/>
 {%- block htmStylesDollPage %}
 {%- endblock htmStylesDollPage %}
 {%- endblock htmStylesPageLayout %}
@@ -25,8 +24,9 @@
 {%- block htmScriptsPageLayout %}
 {{ super() }}
 {%- block htmScriptsDollPage %}
-    <script src="{{staticBaseUrl}}/js/product/doll/Doll.js"></script>
-    <script type="module" src="{{staticBaseUrl}}/js/product/doll/DollSearchPage.js"></script>
+    <script src="{{staticBaseUrl}}/js/search/doll/Doll.js"></script>
+    <script type="module" src="{{staticBaseUrl}}/js/search/doll/DollSearchPage.js"></script>
+    <script type="module" src="{{staticBaseUrl}}/js/search/doll/DollEditPage.js"></script>
 {%- endblock htmScriptsDollPage %}
 {%- endblock htmScriptsPageLayout %}
 
@@ -189,8 +189,29 @@
 {%- block htmUrlDollPage %}{{pageUri}}?q={{query.q}}&amp;rows={% if rows is defined %}{{rows}}{% else %}{{pagination.rows}}{% endif %}&amp;rows={% if start is defined %}{{start}}{% else %}{{pagination.start}}{% endif %}{% for item query.fq %}{% if fq == item %}{% else %}&fq={{fq}}:{{val}}{% endif %}{% endfor %}{% for item in query.sort %}{% if sort == item %}{% else %}&sort={{var}} {{order}}{% endif %}{% endfor %}{%- endblock htmUrlDollPage %}
 
 {%- block htmBodyStartPageLayout %}
-{{ super() }}
+    {{ super() }}
 {%- block htmBodyStartDollPage %}
+{% if resultCount > 0 %}
+          <div class="wa-flank ">
+            <wa-tooltip for="return-to-Doll">back to all dolls</wa-tooltip>
+            <wa-button id="return-to-Doll" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
+              all dolls
+            </wa-button>
+            <h1 class="Page_objectTitle"><i class="{{ FONTAWESOME_STYLE }} fa-reel"></i> {{ result.objectTitle | e }}</h1>
+          </div>
+          <div class="margin-block">
+          </div>
+{% include search/doll/DollSearchForm.htm %}
+          <wa-divider></wa-divider>
+{% include search/doll/DollSearchButtons.htm %}
+{% endif %}
+{%- endblock htmBodyStartDollPage %}
+{%- endblock htmBodyStartPageLayout %}
+
+{%- block htmBodyMiddlePageLayout %}
+{%- block htmBodyMiddleDollPage %}
+        <div class="pageContent ">
 {% if resultCount == 0 %}
         <div class="wa-stack ">
           <wa-tooltip for="return-to-Doll">back to all dolls</wa-tooltip></wa-tooltip>
@@ -209,103 +230,35 @@
             </div>
             <span class="wa-heading-m ">no doll found</span>
             <p class="wa-caption-l ">See the available dolls</p>
-{% include product/doll/DollSearchForm.htm %}
+{% include search/doll/DollSearchForm.htm %}
           </div>
         </div>
 {% else %}
-{%- include product/doll/DollSidebar.htm %}
-{%- include product/doll/DollSuggestedSearch.htm %}
-          <div class="pageContent ">
-            <form action="/api/product/doll" id="DollForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
-              <input name="focusId" type="hidden"/>
-              <input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{ toJsonObjectStringInApostrophes(pageResponse) }}' type="hidden"/>
-              <input name="listDoll" id="listDoll" class="listDoll"  value='{{ toJsonArrayStringInApostrophes(listDoll) }}' type="hidden"/>
-            </form>
-            <div id="site-calendar-box">
-              <div id="site-calendar"><!-- // --></div>
-            </div>
-            <div class="wa-stack wa-gap-m ">
-              <wa-tooltip for="return-to-Doll">back to all dolls</wa-tooltip>
-              <wa-breadcrumb>
-                <wa-breadcrumb-item id="return-to-Doll" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-                  <i class="{{ FONTAWESOME_STYLE }} fa-reel"></i>
-                  all dolls
-                </wa-breadcrumb-item>
-                <wa-breadcrumb-item>
-                  search dolls
-                </wa-breadcrumb-item>
-              </wa-breadcrumb>
-{% include product/doll/DollSearchForm.htm %}
-{% include product/doll/DollSearchButtons.htm %}
+{%- include search/doll/DollSidebar.htm %}
+{%- include search/doll/DollSuggestedSearch.htm %}
 {% endif %}
-{%- endblock htmBodyStartDollPage %}
-{%- endblock htmBodyStartPageLayout %}
-
-{%- block htmBodyMiddlePageLayout %}
-{%- block htmBodyMiddleDollPage %}
-{% if resultCount > 0 %}
-              <div class="wa-stack wa-gap-0 ">
-{% include product/doll/DollPaginationButtons.htm %}
-                <div class="card-like-thing background-color-surface-border" id="site-results-grid">
-                  <div>
-              <wa-dropdown id="htmDropdown-name">
-                <wa-button variant="brand" slot="trigger" caret>Name</wa-button>
-                <wa-menu>
-                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortDoll_name'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-Doll').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="asc" id="htmDropdown-name-asc">
-                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
-                    sort by Name ascending
-                  </wa-menu-item>
-                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortDoll_name'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-Doll').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="desc" id="htmDropdown-name-desc">
-                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
-                    sort by Name descending
-                  </wa-menu-item>
-                </wa-menu>
-              </wa-dropdown>
-              <wa-dropdown id="htmDropdown-description">
-                <wa-button variant="brand" slot="trigger" caret>product description</wa-button>
-                <wa-menu>
-                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortDoll_description'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-Doll').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="asc" id="htmDropdown-description-asc">
-                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
-                    sort by product description ascending
-                  </wa-menu-item>
-                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortDoll_description'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-Doll').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="desc" id="htmDropdown-description-desc">
-                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
-                    sort by product description descending
-                  </wa-menu-item>
-                </wa-menu>
-              </wa-dropdown>
-                  </div>
-                  {% for item in listDoll%}
-                  <div>
-              <a href="{{ item.displayPage }}">
-                <i class="{{ FONTAWESOME_STYLE }} fa-reel"></i>
-              <span>{{ item.name | e }}
-</span>              </a>
-              <a href="{{ item.displayPage }}">
-              <span>{{ item.description | e }}
-</span>              </a>
-                  </div>
-                  {% endfor %}
-              {% if getColumnName is defined %}
-                <div>
-                </div>
-              {% endif %}
-              {% if getColumnDescription is defined %}
-                <div>
-                </div>
-              {% endif %}
-                </div>
-{% include product/doll/DollPaginationButtons.htm %}
-              </div>
-            </div>
-          </div>
-{% endif %}
+{%- block htmFormDollPage %}
+          <form action="/api/doll" id="DollForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
+{% if result.pageId is defined %}
+            <input name="pageId" class="valuePageId" type="hidden" value="{{ result.pageId }}"/>
+            {% endif %}
+            <input name="focusId" type="hidden"/>
+            <input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{ toJsonObjectStringInApostrophes(pageResponse) }}' type="hidden"/>
+            <input name="result" id="result" class="result"  value='{{ toJsonObjectStringInApostrophes(result) }}' type="hidden"/>
+            <input name="listDoll" id="listDoll" class="listDoll"  value='{{ toJsonArrayStringInApostrophes(listDoll) }}' type="hidden"/>
+          </form>
+  {% if solrId is defined %}
+          {{ htmButton_searchpageDoll() }}
+          {{ htmForm_searchpageDoll() }}
+  {% endif %}
+{%- endblock htmFormDollPage %}
+        </div>
 {%- endblock htmBodyMiddleDollPage %}
 {%- endblock htmBodyMiddlePageLayout %}
 
 {%- block htmBodyEndPageLayout %}
 {%- block htmBodyEndDollPage %}
-{%- include product/doll/DollLocation.htm %}
+{%- include search/doll/DollLocation.htm %}
 {%- endblock htmBodyEndDollPage %}
-  {{ super() }}
+      {{ super() }}
 {%- endblock htmBodyEndPageLayout %}
