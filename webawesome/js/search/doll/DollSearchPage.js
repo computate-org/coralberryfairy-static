@@ -73,6 +73,17 @@ Promise.all([
     facetStatsChange('Doll', 'price', false);
   });
 
+  document.querySelector('#pageSelectSortDoll_pageImageUri')?.addEventListener('change', (event) => {
+    sort('Doll', 'pageImageUri', event.currentTarget.value);
+  });
+
+  document.querySelector('#pageStatsDoll_pageImageUri')?.addEventListener('wa-show', (event) => {
+    facetStatsChange('Doll', 'pageImageUri', true);
+  });
+  document.querySelector('#pageStatsDoll_pageImageUri')?.addEventListener('wa-hide', (event) => {
+    facetStatsChange('Doll', 'pageImageUri', false);
+  });
+
   document.querySelector('#pageSelectSortDoll_pageId')?.addEventListener('change', (event) => {
     sort('Doll', 'pageId', event.currentTarget.value);
   });
@@ -216,6 +227,17 @@ Promise.all([
     facetStatsChange('Doll', 'solrId', false);
   });
 
+  document.querySelector('#pageSelectSortDoll_storeUrl')?.addEventListener('change', (event) => {
+    sort('Doll', 'storeUrl', event.currentTarget.value);
+  });
+
+  document.querySelector('#pageStatsDoll_storeUrl')?.addEventListener('wa-show', (event) => {
+    facetStatsChange('Doll', 'storeUrl', true);
+  });
+  document.querySelector('#pageStatsDoll_storeUrl')?.addEventListener('wa-hide', (event) => {
+    facetStatsChange('Doll', 'storeUrl', false);
+  });
+
   document.querySelector('#pageSelectSortDoll_resourceUri')?.addEventListener('change', (event) => {
     sort('Doll', 'resourceUri', event.currentTarget.value);
   });
@@ -238,6 +260,50 @@ Promise.all([
     facetStatsChange('Doll', 'templateUri', false);
   });
 
+  document.querySelector('#pageSelectSortDoll_pageImageWidth')?.addEventListener('change', (event) => {
+    sort('Doll', 'pageImageWidth', event.currentTarget.value);
+  });
+
+  document.querySelector('#pageStatsDoll_pageImageWidth')?.addEventListener('wa-show', (event) => {
+    facetStatsChange('Doll', 'pageImageWidth', true);
+  });
+  document.querySelector('#pageStatsDoll_pageImageWidth')?.addEventListener('wa-hide', (event) => {
+    facetStatsChange('Doll', 'pageImageWidth', false);
+  });
+
+  document.querySelector('#pageSelectSortDoll_pageImageHeight')?.addEventListener('change', (event) => {
+    sort('Doll', 'pageImageHeight', event.currentTarget.value);
+  });
+
+  document.querySelector('#pageStatsDoll_pageImageHeight')?.addEventListener('wa-show', (event) => {
+    facetStatsChange('Doll', 'pageImageHeight', true);
+  });
+  document.querySelector('#pageStatsDoll_pageImageHeight')?.addEventListener('wa-hide', (event) => {
+    facetStatsChange('Doll', 'pageImageHeight', false);
+  });
+
+  document.querySelector('#pageSelectSortDoll_pageImageType')?.addEventListener('change', (event) => {
+    sort('Doll', 'pageImageType', event.currentTarget.value);
+  });
+
+  document.querySelector('#pageStatsDoll_pageImageType')?.addEventListener('wa-show', (event) => {
+    facetStatsChange('Doll', 'pageImageType', true);
+  });
+  document.querySelector('#pageStatsDoll_pageImageType')?.addEventListener('wa-hide', (event) => {
+    facetStatsChange('Doll', 'pageImageType', false);
+  });
+
+  document.querySelector('#pageSelectSortDoll_pageImageAlt')?.addEventListener('change', (event) => {
+    sort('Doll', 'pageImageAlt', event.currentTarget.value);
+  });
+
+  document.querySelector('#pageStatsDoll_pageImageAlt')?.addEventListener('wa-show', (event) => {
+    facetStatsChange('Doll', 'pageImageAlt', true);
+  });
+  document.querySelector('#pageStatsDoll_pageImageAlt')?.addEventListener('wa-hide', (event) => {
+    facetStatsChange('Doll', 'pageImageAlt', false);
+  });
+
   document.querySelector('#pageSelectSortDoll_emailTemplate')?.addEventListener('change', (event) => {
     sort('Doll', 'emailTemplate', event.currentTarget.value);
   });
@@ -249,17 +315,6 @@ Promise.all([
     facetStatsChange('Doll', 'emailTemplate', false);
   });
 
-  document.querySelector('#pageSelectSortDoll_storeUrl')?.addEventListener('change', (event) => {
-    sort('Doll', 'storeUrl', event.currentTarget.value);
-  });
-
-  document.querySelector('#pageStatsDoll_storeUrl')?.addEventListener('wa-show', (event) => {
-    facetStatsChange('Doll', 'storeUrl', true);
-  });
-  document.querySelector('#pageStatsDoll_storeUrl')?.addEventListener('wa-hide', (event) => {
-    facetStatsChange('Doll', 'storeUrl', false);
-  });
-
   document.querySelector('#pageSelectSortDoll_instagramUrl')?.addEventListener('change', (event) => {
     sort('Doll', 'instagramUrl', event.currentTarget.value);
   });
@@ -269,6 +324,28 @@ Promise.all([
   });
   document.querySelector('#pageStatsDoll_instagramUrl')?.addEventListener('wa-hide', (event) => {
     facetStatsChange('Doll', 'instagramUrl', false);
+  });
+
+  document.querySelector('#pageSelectSortDoll_hashtags')?.addEventListener('change', (event) => {
+    sort('Doll', 'hashtags', event.currentTarget.value);
+  });
+
+  document.querySelector('#pageStatsDoll_hashtags')?.addEventListener('wa-show', (event) => {
+    facetStatsChange('Doll', 'hashtags', true);
+  });
+  document.querySelector('#pageStatsDoll_hashtags')?.addEventListener('wa-hide', (event) => {
+    facetStatsChange('Doll', 'hashtags', false);
+  });
+
+  document.querySelector('#pageSelectSortDoll_hashtagsList')?.addEventListener('change', (event) => {
+    sort('Doll', 'hashtagsList', event.currentTarget.value);
+  });
+
+  document.querySelector('#pageStatsDoll_hashtagsList')?.addEventListener('wa-show', (event) => {
+    facetStatsChange('Doll', 'hashtagsList', true);
+  });
+  document.querySelector('#pageStatsDoll_hashtagsList')?.addEventListener('wa-hide', (event) => {
+    facetStatsChange('Doll', 'hashtagsList', false);
   });
 
   document.querySelector('#pageSelectSortDoll_title')?.addEventListener('change', (event) => {
@@ -380,6 +457,18 @@ Promise.all([
           document.querySelector('#pageFacetRangeGapDoll_price')?.addEventListener('change', (event) => {
             facetRangeGapChange('Doll', event.currentTarget);
           });
+          document.querySelector('#fqDoll_pageImageUri')?.addEventListener('change', (event) => {
+            fqChange('Doll', event.currentTarget);
+          });
+          document.querySelector('#buttonFacetDoll_pageImageUri')?.addEventListener('click', (event) => {
+            facetFieldChange('Doll', event.currentTarget);
+          });
+          document.querySelector('#pageFacetPivotDoll_pageImageUri')?.addEventListener('change', (event) => {
+            facetPivotChange('Doll', event.currentTarget);
+          });
+          document.querySelector('#pageFacetRangeGapDoll_pageImageUri')?.addEventListener('change', (event) => {
+            facetRangeGapChange('Doll', event.currentTarget);
+          });
           document.querySelector('#fqDoll_pageId')?.addEventListener('change', (event) => {
             fqChange('Doll', event.currentTarget);
           });
@@ -402,6 +491,18 @@ Promise.all([
             facetPivotChange('Doll', event.currentTarget);
           });
           document.querySelector('#pageFacetRangeGapDoll_displayPage')?.addEventListener('change', (event) => {
+            facetRangeGapChange('Doll', event.currentTarget);
+          });
+          document.querySelector('#fqDoll_storeUrl')?.addEventListener('change', (event) => {
+            fqChange('Doll', event.currentTarget);
+          });
+          document.querySelector('#buttonFacetDoll_storeUrl')?.addEventListener('click', (event) => {
+            facetFieldChange('Doll', event.currentTarget);
+          });
+          document.querySelector('#pageFacetPivotDoll_storeUrl')?.addEventListener('change', (event) => {
+            facetPivotChange('Doll', event.currentTarget);
+          });
+          document.querySelector('#pageFacetRangeGapDoll_storeUrl')?.addEventListener('change', (event) => {
             facetRangeGapChange('Doll', event.currentTarget);
           });
           document.querySelector('#fqDoll_resourceUri')?.addEventListener('change', (event) => {
@@ -440,18 +541,6 @@ Promise.all([
           document.querySelector('#pageFacetRangeGapDoll_emailTemplate')?.addEventListener('change', (event) => {
             facetRangeGapChange('Doll', event.currentTarget);
           });
-          document.querySelector('#fqDoll_storeUrl')?.addEventListener('change', (event) => {
-            fqChange('Doll', event.currentTarget);
-          });
-          document.querySelector('#buttonFacetDoll_storeUrl')?.addEventListener('click', (event) => {
-            facetFieldChange('Doll', event.currentTarget);
-          });
-          document.querySelector('#pageFacetPivotDoll_storeUrl')?.addEventListener('change', (event) => {
-            facetPivotChange('Doll', event.currentTarget);
-          });
-          document.querySelector('#pageFacetRangeGapDoll_storeUrl')?.addEventListener('change', (event) => {
-            facetRangeGapChange('Doll', event.currentTarget);
-          });
           document.querySelector('#fqDoll_instagramUrl')?.addEventListener('change', (event) => {
             fqChange('Doll', event.currentTarget);
           });
@@ -462,6 +551,30 @@ Promise.all([
             facetPivotChange('Doll', event.currentTarget);
           });
           document.querySelector('#pageFacetRangeGapDoll_instagramUrl')?.addEventListener('change', (event) => {
+            facetRangeGapChange('Doll', event.currentTarget);
+          });
+          document.querySelector('#fqDoll_hashtags')?.addEventListener('change', (event) => {
+            fqChange('Doll', event.currentTarget);
+          });
+          document.querySelector('#buttonFacetDoll_hashtags')?.addEventListener('click', (event) => {
+            facetFieldChange('Doll', event.currentTarget);
+          });
+          document.querySelector('#pageFacetPivotDoll_hashtags')?.addEventListener('change', (event) => {
+            facetPivotChange('Doll', event.currentTarget);
+          });
+          document.querySelector('#pageFacetRangeGapDoll_hashtags')?.addEventListener('change', (event) => {
+            facetRangeGapChange('Doll', event.currentTarget);
+          });
+          document.querySelector('#fqDoll_hashtagsList')?.addEventListener('change', (event) => {
+            fqChange('Doll', event.currentTarget);
+          });
+          document.querySelector('#buttonFacetDoll_hashtagsList')?.addEventListener('click', (event) => {
+            facetFieldChange('Doll', event.currentTarget);
+          });
+          document.querySelector('#pageFacetPivotDoll_hashtagsList')?.addEventListener('change', (event) => {
+            facetPivotChange('Doll', event.currentTarget);
+          });
+          document.querySelector('#pageFacetRangeGapDoll_hashtagsList')?.addEventListener('change', (event) => {
             facetRangeGapChange('Doll', event.currentTarget);
           });
           document.querySelector('#fqDoll_productNum')?.addEventListener('change', (event) => {

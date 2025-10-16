@@ -1,1 +1,61 @@
 {% extends "search/doll/DollGenSearchPage.htm" %}
+{%- block htmBodyMiddleDollPage %}
+{% if resultCount > 0 %}
+<img src="{{ STATIC_BASE_URL }}/product-images/dolls.jpg" alt="">
+              <div class="wa-stack wa-gap-0 ">
+{% include search/doll/DollPaginationButtons.htm %}
+                <div class="card-like-thing background-color-surface-border" id="site-results-grid">
+                  <div>
+              <wa-dropdown id="htmDropdown-name">
+                <wa-button variant="brand" slot="trigger" caret>name</wa-button>
+                <wa-menu>
+                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortDoll_name'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-Doll').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="asc" id="htmDropdown-name-asc">
+                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
+                    sort by name ascending
+                  </wa-menu-item>
+                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortDoll_name'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-Doll').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="desc" id="htmDropdown-name-desc">
+                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
+                    sort by name descending
+                  </wa-menu-item>
+                </wa-menu>
+              </wa-dropdown>
+              <wa-dropdown id="htmDropdown-description">
+                <wa-button variant="brand" slot="trigger" caret>product description</wa-button>
+                <wa-menu>
+                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortDoll_description'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-Doll').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="asc" id="htmDropdown-description-asc">
+                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
+                    sort by product description ascending
+                  </wa-menu-item>
+                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortDoll_description'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-Doll').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="desc" id="htmDropdown-description-desc">
+                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
+                    sort by product description descending
+                  </wa-menu-item>
+                </wa-menu>
+              </wa-dropdown>
+                  </div>
+                  {% for item in listDoll%}
+                  <div>
+              <a href="{{ item.displayPage }}">
+                <i class="{{ FONTAWESOME_STYLE }} fa-reel"></i>
+              <span>{{ item.name | e }}
+</span>              </a>
+              <a href="{{ item.displayPage }}">
+              <span>{{ item.description | e }}
+</span>              </a>
+                  </div>
+                  {% endfor %}
+              {% if getColumnName is defined %}
+                <div>
+                </div>
+              {% endif %}
+              {% if getColumnDescription is defined %}
+                <div>
+                </div>
+              {% endif %}
+                </div>
+{% include search/doll/DollPaginationButtons.htm %}
+              </div>
+            </div>
+          </div>
+{% endif %}
+{%- endblock htmBodyMiddleDollPage %}

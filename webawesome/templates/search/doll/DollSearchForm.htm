@@ -122,8 +122,8 @@
   {%- endif %}
                   <wa-input
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[String] Name"
-                      label="Name"
+                      placeholder="[String] name"
+                      label="name"
                       hint="
 A descriptive name for the doll"
                       id="{{classApiMethodMethod}}_name"
@@ -227,6 +227,43 @@ The price of the product."
 
 {%- macro htmPriceDollPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
                             {{ inputPriceDollPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputPageImageUriDollPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_pageImageUri">
+  {%- endif %}
+                  <wa-input
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="[String] imageUri"
+                      label="imageUri"
+                      hint="
+The page image URI"
+                      id="{{classApiMethodMethod}}_pageImageUri"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-pageId={{ result.pageId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_pageImageUri setPageImageUri classDoll inputDoll{{ result.pageId }}PageImageUri "
+                      name="setPageImageUri"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_pageImageUri setPageImageUri classDoll inputDoll{{ result.pageId }}PageImageUri "
+                      name="setPageImageUri"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_pageImageUri valuePageImageUri classDoll inputDoll{{ result.pageId }}PageImageUri "
+                      name="pageImageUri"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{result.pageImageUri | e }}"
+  {%- endif %}
+                      ></wa-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmPageImageUriDollPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputPageImageUriDollPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
 {%- endmacro %}
 {%- macro inputPageIdDollPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
@@ -362,6 +399,18 @@ The ID for this page. "
                 {%- endif %}
               {%- endif %}
               </div>
+              <div class="grid-with-subgrid-2col ">
+
+              {%- if "PATCH" in scopes %}
+                {{ htmPageImageUriDollPage(classApiMethodMethod='PATCH', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmPageImageUriDollPage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmPageImageUriDollPage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+              </div>
             </wa-details>
             <wa-details open class="HtmRow" id="useful-urls">
               <div slot="summary">
@@ -443,6 +492,18 @@ The ID for this page. "
                   {{ htmPriceDollPage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=true) }}
                 {%- else %}
                   {{ htmPriceDollPage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+              </div>
+              <div class="grid-with-subgrid-2col ">
+
+              {%- if "POST" in scopes %}
+                {{ htmPageImageUriDollPage(classApiMethodMethod='POST', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmPageImageUriDollPage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmPageImageUriDollPage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
               </div>
@@ -614,6 +675,18 @@ The ID for this page. "
                 {%- endif %}
               {%- endif %}
               </div>
+              <div class="grid-with-subgrid-2col ">
+
+              {%- if "PATCH" in scopes %}
+                {{ htmPageImageUriDollPage(classApiMethodMethod='Page', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmPageImageUriDollPage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmPageImageUriDollPage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+              </div>
             </wa-details>
             <wa-details open class="HtmRow" id="useful-urls">
               <div slot="summary">
@@ -681,7 +754,7 @@ The ID for this page. "
                      onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllDollGenPage{{ result.pageId | e }}')); }, function() { addError(document.querySelector('#refreshAllDollGenPage{{ result.pageId | e }}')); }); "
                     >
                   <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrows-rotate"></i>
-                  Refresh all 
+                  refresh all 
                 </wa-button>
     {% endif %}
   {% endif %}

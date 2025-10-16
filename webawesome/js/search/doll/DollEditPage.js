@@ -120,6 +120,27 @@ Promise.all([
             const valid = form.reportValidity();
           });
 
+          // PATCH pageImageUri
+          document.querySelector('#Page_pageImageUri')?.addEventListener('change', (event) => {
+            const form = document.querySelector('#PageForm_pageImageUri');
+            const valid = form.checkValidity();
+            if(valid) {
+              patchDollVal([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pageId:' + event.currentTarget.getAttribute('data-pageId') }]
+                  , 'setPageImageUri', event.currentTarget.value
+                  , event.currentTarget
+                , function(response, target) { addGlow(target); }
+                  , function(response, target) { addError(target); }
+                  );
+            }
+          });
+          document.querySelector('#Page_pageImageUri')?.addEventListener('focus', (event) => {
+            removeGlow(event.currentTarget);
+          });
+          document.querySelector('#Page_pageImageUri')?.addEventListener('blur', (event) => {
+            const form = document.querySelector('#PageForm_pageImageUri');
+            const valid = form.reportValidity();
+          });
+
           // PATCH pageId
           document.querySelector('#Page_pageId')?.addEventListener('change', (event) => {
             const form = document.querySelector('#PageForm_pageId');
@@ -204,6 +225,27 @@ Promise.all([
             const valid = form.reportValidity();
           });
 
+          // PATCH storeUrl
+          document.querySelector('#Page_storeUrl')?.addEventListener('change', (event) => {
+            const form = document.querySelector('#PageForm_storeUrl');
+            const valid = form.checkValidity();
+            if(valid) {
+              patchDollVal([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pageId:' + event.currentTarget.getAttribute('data-pageId') }]
+                  , 'setStoreUrl', event.currentTarget.value
+                  , event.currentTarget
+                , function(response, target) { addGlow(target); }
+                  , function(response, target) { addError(target); }
+                  );
+            }
+          });
+          document.querySelector('#Page_storeUrl')?.addEventListener('focus', (event) => {
+            removeGlow(event.currentTarget);
+          });
+          document.querySelector('#Page_storeUrl')?.addEventListener('blur', (event) => {
+            const form = document.querySelector('#PageForm_storeUrl');
+            const valid = form.reportValidity();
+          });
+
           // PATCH resourceUri
           document.querySelector('#Page_resourceUri')?.addEventListener('change', (event) => {
             const form = document.querySelector('#PageForm_resourceUri');
@@ -246,6 +288,27 @@ Promise.all([
             const valid = form.reportValidity();
           });
 
+          // PATCH pageImageAlt
+          document.querySelector('#Page_pageImageAlt')?.addEventListener('change', (event) => {
+            const form = document.querySelector('#PageForm_pageImageAlt');
+            const valid = form.checkValidity();
+            if(valid) {
+              patchDollVal([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pageId:' + event.currentTarget.getAttribute('data-pageId') }]
+                  , 'setPageImageAlt', event.currentTarget.value
+                  , event.currentTarget
+                , function(response, target) { addGlow(target); }
+                  , function(response, target) { addError(target); }
+                  );
+            }
+          });
+          document.querySelector('#Page_pageImageAlt')?.addEventListener('focus', (event) => {
+            removeGlow(event.currentTarget);
+          });
+          document.querySelector('#Page_pageImageAlt')?.addEventListener('blur', (event) => {
+            const form = document.querySelector('#PageForm_pageImageAlt');
+            const valid = form.reportValidity();
+          });
+
           // PATCH emailTemplate
           document.querySelector('#Page_emailTemplate')?.addEventListener('change', (event) => {
             const form = document.querySelector('#PageForm_emailTemplate');
@@ -267,27 +330,6 @@ Promise.all([
             const valid = form.reportValidity();
           });
 
-          // PATCH storeUrl
-          document.querySelector('#Page_storeUrl')?.addEventListener('change', (event) => {
-            const form = document.querySelector('#PageForm_storeUrl');
-            const valid = form.checkValidity();
-            if(valid) {
-              patchDollVal([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pageId:' + event.currentTarget.getAttribute('data-pageId') }]
-                  , 'setStoreUrl', event.currentTarget.value
-                  , event.currentTarget
-                , function(response, target) { addGlow(target); }
-                  , function(response, target) { addError(target); }
-                  );
-            }
-          });
-          document.querySelector('#Page_storeUrl')?.addEventListener('focus', (event) => {
-            removeGlow(event.currentTarget);
-          });
-          document.querySelector('#Page_storeUrl')?.addEventListener('blur', (event) => {
-            const form = document.querySelector('#PageForm_storeUrl');
-            const valid = form.reportValidity();
-          });
-
           // PATCH instagramUrl
           document.querySelector('#Page_instagramUrl')?.addEventListener('change', (event) => {
             const form = document.querySelector('#PageForm_instagramUrl');
@@ -306,6 +348,48 @@ Promise.all([
           });
           document.querySelector('#Page_instagramUrl')?.addEventListener('blur', (event) => {
             const form = document.querySelector('#PageForm_instagramUrl');
+            const valid = form.reportValidity();
+          });
+
+          // PATCH hashtags
+          document.querySelector('#Page_hashtags')?.addEventListener('change', (event) => {
+            const form = document.querySelector('#PageForm_hashtags');
+            const valid = form.checkValidity();
+            if(valid) {
+              patchDollVal([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pageId:' + event.currentTarget.getAttribute('data-pageId') }]
+                  , 'setHashtags', event.currentTarget.value
+                  , event.currentTarget
+                , function(response, target) { addGlow(target); }
+                  , function(response, target) { addError(target); }
+                  );
+            }
+          });
+          document.querySelector('#Page_hashtags')?.addEventListener('focus', (event) => {
+            removeGlow(event.currentTarget);
+          });
+          document.querySelector('#Page_hashtags')?.addEventListener('blur', (event) => {
+            const form = document.querySelector('#PageForm_hashtags');
+            const valid = form.reportValidity();
+          });
+
+          // PATCH hashtagsList
+          document.querySelector('#Page_hashtagsList')?.addEventListener('change', (event) => {
+            const form = document.querySelector('#PageForm_hashtagsList');
+            const valid = form.checkValidity();
+            if(valid) {
+              patchDollVal([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pageId:' + event.currentTarget.getAttribute('data-pageId') }]
+                  , 'setHashtagsList', event.currentTarget.value.replace('[','').replace(']','').split(/[ ,]+/)
+                  , event.currentTarget
+                  , function(response, target) { addGlow(target); }
+                  , function(response, target) { addError(target); }
+                  );
+            }
+          });
+          document.querySelector('#Page_hashtagsList')?.addEventListener('focus', (event) => {
+            removeGlow(event.currentTarget);
+          });
+          document.querySelector('#Page_hashtagsList')?.addEventListener('blur', (event) => {
+            const form = document.querySelector('#PageForm_hashtagsList');
             const valid = form.reportValidity();
           });
 

@@ -5,13 +5,14 @@
     <!-- <meta name="result.storeUrl" content="https://store.computate.org/product/computate-smart-cloud-deployer/11"/> -->
     <!-- <meta name="result.emailTemplate" content="/en-us/email/order-details.htm"/> -->
     <meta name="result.name" content="Pink Teacup Pixie Doll"/>
-    <meta name="result.imageUri" content="/product-images/{{ pageId }}.jpg"/>
+    <meta name="result.pageImageUri" content="/product-images/{{ result.pageId }}.jpg"/>
     <meta name="result.title" content="{{ name }}"/>
     <meta name="result.description" content="Beautiful hand made pure wool felt pixie doll"/>
     <meta name="result.productNum" content="1"/>
     <meta name="result.price" content="2048.00"/>
     <meta name="result.instagramUrl" content="https://www.instagram.com/coralberry_fairy/p/C-_X3wdPkyf/?img_index=1"/>
     <meta name="result.price" content="9999.00"/>
+    <meta name="result.hashtags" content="#gingermelondoll #gingermelonpocketpoppet #fairydoll #tinydoll #teacupdoll #teacup #shabbychic #shabbychicdecor #girlsroom #girlsshelf #doll #dolly #feltdoll #entirelyhandmade #handsewn #sewnwithlove #imaginativeplay #dollmaker #dollstagram #teacupfairy #handmadetoys #handsewndoll #coralberryfairy #gingermelon"/>
 {% endblock htmMetaPageLayout %}
 {% block htmStylePageLayout %}
 {% endblock htmStylePageLayout %}
@@ -19,17 +20,28 @@
     <title>{{ title }}</title>
 {% endblock htmTitlePageLayout %}
 {% block htmBodyMiddlePageLayout %}
-    <div>
-      <wa-card with-image>
-        <img slot="image" src="{{ STATIC_BASE_URL }}{{ imageUri }}" alt="{{ name }}" />
-        <div>
-          <h3 class="text-center font-2xl font-weight-heading">{{ name }}</h3>
-          <h4 class="text-center font-l font-weight-action">{{ description }}</h4>
-          <p>
-            ✨💕 A fun little fairy doll project 💕✨ This tea cup size doll is a scaled down pattern of the @gingermelongirl Pocket Poppet doll. She was fun to make! I'm trying to decide if she needs some wings too 🧚‍♀️✨💕
+    <div class="split-block">
+      <img src="{{ STATIC_BASE_URL }}{{ result.pageImageUri }}" alt="{{ result.name | e }}" />
+      <div>
+        <h3 class="text-center font-2xl font-weight-heading">{{ result.name }}</h3>
+        <h4 class="text-center font-l font-weight-action">{{ result.description }}</h4>
+        <p class="text-center">
+          ✨💕 A fun little fairy doll project 💕✨ 
+        </p>
+        <p>
+          This tea cup size doll is a scaled down pattern of the <a href="https://www.instagram.com/gingermelongirl/">@gingermelongirl</a> Pocket Poppet doll. She was fun to make! I'm trying to decide if she needs some wings too 🧚‍♀️✨💕
+        </p>
+        <div class="text-center">
+          <p class="wa-cluster justify-content-center">
+            <wa-button variant="brand" appearance="plain">Buy this doll</wa-button>
+            <span>${{ result.price }}</span>
           </p>
-          <wa-tag variant="brand">${{ price }}</wa-tag>
+          <p class="wa-cluster hashtag-list">
+            {% for hashtag in result.hashtagsList %}
+            <a href="https://www.instagram.com/explore/tags/{{ hashtag }}/">#{{ hashtag }}</a>
+            {% endfor %}
+          </p>
         </div>
-      </wa-card>
+      </div>
     </div>
 {% endblock %}

@@ -908,8 +908,8 @@ async function websocketSitePageInner(apiRequest) {
         var inputPrerequisiteArticles = null;
         var inputNextArticleIds = null;
         var inputNextArticles = null;
-        var inputRelatedArticleIds = null;
         var inputRelatedArticles = null;
+        var inputRelatedArticleIds = null;
 
         if(vars.includes('created'))
           inputCreated = $response.querySelector('.Page_created');
@@ -977,10 +977,10 @@ async function websocketSitePageInner(apiRequest) {
           inputNextArticleIds = $response.querySelector('.Page_nextArticleIds');
         if(vars.includes('nextArticles'))
           inputNextArticles = $response.querySelector('.Page_nextArticles');
-        if(vars.includes('relatedArticleIds'))
-          inputRelatedArticleIds = $response.querySelector('.Page_relatedArticleIds');
         if(vars.includes('relatedArticles'))
           inputRelatedArticles = $response.querySelector('.Page_relatedArticles');
+        if(vars.includes('relatedArticleIds'))
+          inputRelatedArticleIds = $response.querySelector('.Page_relatedArticleIds');
 
         jsWebsocketSitePage(pageId, vars, $response);
         window.result = JSON.parse($response.querySelector('.pageForm .result')?.value);
@@ -1317,16 +1317,6 @@ async function websocketSitePageInner(apiRequest) {
           addGlow(document.querySelector('.Page_nextArticles'));
         }
 
-        if(inputRelatedArticleIds) {
-          document.querySelectorAll('.Page_relatedArticleIds').forEach((item, index) => {
-            if(typeof item.value !== 'undefined')
-              item.value = inputRelatedArticleIds.getAttribute('value');
-            else
-              item.textContent = inputRelatedArticleIds.textContent;
-          });
-          addGlow(document.querySelector('.Page_relatedArticleIds'));
-        }
-
         if(inputRelatedArticles) {
           document.querySelectorAll('.Page_relatedArticles').forEach((item, index) => {
             if(typeof item.value !== 'undefined')
@@ -1335,6 +1325,16 @@ async function websocketSitePageInner(apiRequest) {
               item.textContent = inputRelatedArticles.textContent;
           });
           addGlow(document.querySelector('.Page_relatedArticles'));
+        }
+
+        if(inputRelatedArticleIds) {
+          document.querySelectorAll('.Page_relatedArticleIds').forEach((item, index) => {
+            if(typeof item.value !== 'undefined')
+              item.value = inputRelatedArticleIds.getAttribute('value');
+            else
+              item.textContent = inputRelatedArticleIds.textContent;
+          });
+          addGlow(document.querySelector('.Page_relatedArticleIds'));
         }
 
           pageGraphSitePage();

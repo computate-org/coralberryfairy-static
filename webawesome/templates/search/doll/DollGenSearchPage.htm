@@ -249,15 +249,15 @@
                 <div class="card-like-thing background-color-surface-border" id="site-results-grid">
                   <div>
               <wa-dropdown id="htmDropdown-name">
-                <wa-button variant="brand" slot="trigger" caret>Name</wa-button>
+                <wa-button variant="brand" slot="trigger" caret>name</wa-button>
                 <wa-menu>
                   <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortDoll_name'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-Doll').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="asc" id="htmDropdown-name-asc">
                     <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
-                    sort by Name ascending
+                    sort by name ascending
                   </wa-menu-item>
                   <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortDoll_name'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-Doll').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="desc" id="htmDropdown-name-desc">
                     <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
-                    sort by Name descending
+                    sort by name descending
                   </wa-menu-item>
                 </wa-menu>
               </wa-dropdown>

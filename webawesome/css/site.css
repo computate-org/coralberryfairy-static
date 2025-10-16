@@ -207,11 +207,7 @@ main, footer {
   /* Font */
   /********/
 
-  font-family: "IBM Plex Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: normal;
-  font-style: normal;
-  line-height: var(--wa-line-height-normal);
+  --wa-font-family-body: "Alegreya", serif;
 
   wa-page {
 
@@ -622,6 +618,7 @@ main, footer {
 .display-block {
   display: block;
 }
+
 #main-content {
   max-width: 120ch;
   margin-inline: auto;
@@ -636,5 +633,21 @@ main, footer {
   text-wrap-mode: nowrap;
   * {
     text-wrap-mode: wrap;
+  }
+}
+.split-block {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(30ch, 100%), 1fr));
+  gap: var(--wa-space-xl);
+  align-items: center;
+}
+.hashtag-list {
+  row-gap: var(--wa-space-2xs);
+  column-gap: 1em;
+  justify-content: center;
+  a {
+    &:not(:hover) {
+      text-decoration: none;
+    }
   }
 }
