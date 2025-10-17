@@ -212,7 +212,7 @@ The primary key of this object in the database"
                       placeholder="[String] font size"
                       label="font size"
                       hint="
-The default font size for the site."
+The default font size for the site"
                       id="{{classApiMethodMethod}}_siteFontSize"
   {%- if "Page" == classApiMethodMethod %}
                       data-userId={{ result.userId | tojson }}
@@ -259,7 +259,7 @@ The default font size for the site."
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="awesome effect"
                       label="awesome effect"
-                      hint="An awesome effect for the entire site."
+                      hint="An awesome effect for the entire site"
   {%- if 'Page' == classApiMethodMethod %}
                       class="label-on-left {{classApiMethodMethod}}_awesomeEffect classSiteUser inputSiteUser{{ result.userId }}AwesomeEffect "
                       name="setAwesomeEffect"

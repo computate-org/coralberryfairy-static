@@ -348,6 +348,17 @@ Promise.all([
     facetStatsChange('SiteUser', 'displayName', false);
   });
 
+  document.querySelector('#pageSelectSortSiteUser_customerProfileId')?.addEventListener('change', (event) => {
+    sort('SiteUser', 'customerProfileId', event.currentTarget.value);
+  });
+
+  document.querySelector('#pageStatsSiteUser_customerProfileId')?.addEventListener('wa-show', (event) => {
+    facetStatsChange('SiteUser', 'customerProfileId', true);
+  });
+  document.querySelector('#pageStatsSiteUser_customerProfileId')?.addEventListener('wa-hide', (event) => {
+    facetStatsChange('SiteUser', 'customerProfileId', false);
+  });
+
   document.querySelector('#htmButton_patchSiteUser')?.addEventListener('click', (event) => {
     document.querySelector('#patchSiteUserDialog').open = true;
   });
@@ -393,6 +404,42 @@ Promise.all([
             facetPivotChange('SiteUser', event.currentTarget);
           });
           document.querySelector('#pageFacetRangeGapSiteUser_displayPage')?.addEventListener('change', (event) => {
+            facetRangeGapChange('SiteUser', event.currentTarget);
+          });
+          document.querySelector('#fqSiteUser_editPage')?.addEventListener('change', (event) => {
+            fqChange('SiteUser', event.currentTarget);
+          });
+          document.querySelector('#buttonFacetSiteUser_editPage')?.addEventListener('click', (event) => {
+            facetFieldChange('SiteUser', event.currentTarget);
+          });
+          document.querySelector('#pageFacetPivotSiteUser_editPage')?.addEventListener('change', (event) => {
+            facetPivotChange('SiteUser', event.currentTarget);
+          });
+          document.querySelector('#pageFacetRangeGapSiteUser_editPage')?.addEventListener('change', (event) => {
+            facetRangeGapChange('SiteUser', event.currentTarget);
+          });
+          document.querySelector('#fqSiteUser_userPage')?.addEventListener('change', (event) => {
+            fqChange('SiteUser', event.currentTarget);
+          });
+          document.querySelector('#buttonFacetSiteUser_userPage')?.addEventListener('click', (event) => {
+            facetFieldChange('SiteUser', event.currentTarget);
+          });
+          document.querySelector('#pageFacetPivotSiteUser_userPage')?.addEventListener('change', (event) => {
+            facetPivotChange('SiteUser', event.currentTarget);
+          });
+          document.querySelector('#pageFacetRangeGapSiteUser_userPage')?.addEventListener('change', (event) => {
+            facetRangeGapChange('SiteUser', event.currentTarget);
+          });
+          document.querySelector('#fqSiteUser_download')?.addEventListener('change', (event) => {
+            fqChange('SiteUser', event.currentTarget);
+          });
+          document.querySelector('#buttonFacetSiteUser_download')?.addEventListener('click', (event) => {
+            facetFieldChange('SiteUser', event.currentTarget);
+          });
+          document.querySelector('#pageFacetPivotSiteUser_download')?.addEventListener('change', (event) => {
+            facetPivotChange('SiteUser', event.currentTarget);
+          });
+          document.querySelector('#pageFacetRangeGapSiteUser_download')?.addEventListener('change', (event) => {
             facetRangeGapChange('SiteUser', event.currentTarget);
           });
 });

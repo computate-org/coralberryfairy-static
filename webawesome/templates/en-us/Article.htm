@@ -1,4 +1,7 @@
 {% extends "en-us/PageLayout.htm" %}
+{%- macro code(code) %}
+<div class="wa-flank wa-gap-2xs "><wa-copy-button value="{{ code | e }}"></wa-copy-button><wa-scroller><pre><code>{{ code | e }}</code></pre></wa-scroller></div>
+{%- endmacro %}
 {%- macro articleH1(resultName) -%}
     <h1 class="wa-heading-3xl">
       {{ result.name | e }}
@@ -56,7 +59,7 @@
 {%- if result.prerequisiteArticles | length > 0 -%}
     <div class="wa-stack">
       <h3 class="wa-heading-xl">Prerequisite Article{%- if result.nextArticles | length > 0 -%}s{% else %}{% endif %}</h3>
-      <wa-carousel navigation pagination slides-per-page="3" slides-per-move="3" style="--aspect-ratio: initial">
+      <wa-carousel navigation pagination slides-per-page="2" slides-per-move="2" style="--aspect-ratio: initial">
         {% for prerequisiteArticle in result.prerequisiteArticles %}
         <wa-carousel-item>
           <a href="{{ prerequisiteArticle.displayPage }}" class="wa-link-plain">
@@ -86,7 +89,7 @@
 {%- if result.nextArticles | length > 0 -%}
     <div class="wa-stack">
       <h3 class="wa-heading-xl">Next Article{%- if result.nextArticles | length > 0 -%}s{% else %}{% endif %}</h3>
-      <wa-carousel navigation pagination slides-per-page="3" slides-per-move="3" style="--aspect-ratio: initial">
+      <wa-carousel navigation pagination slides-per-page="2" slides-per-move="2" style="--aspect-ratio: initial">
         {% for nextArticle in result.nextArticles %}
         <wa-carousel-item>
           <a href="{{ nextArticle.displayPage }}" class="wa-link-plain">
@@ -116,7 +119,7 @@
 {%- if result.relatedArticles | length > 0 -%}
     <div class="wa-stack">
       <h3 class="wa-heading-xl">Related Article{%- if result.nextArticles | length > 0 -%}s{% else %}{% endif %}</h3>
-      <wa-carousel navigation pagination slides-per-page="3" slides-per-move="3" style="--aspect-ratio: initial">
+      <wa-carousel navigation pagination slides-per-page="2" slides-per-move="2" style="--aspect-ratio: initial">
         {% for relatedArticle in result.relatedArticles %}
         <wa-carousel-item>
           <a href="{{ relatedArticle.displayPage }}" class="wa-link-plain">
@@ -151,7 +154,7 @@
 {{ articleCreated(result) }}
     </div>
   </div>
-  <div class="wa-stack " style="max-width: 80ch; margin-inline: auto; ">
+  <div class="wa-stack " style="max-width: 80ch; ">
 {{ prerequisiteArticles(result) }}
 {%- endmacro %}
 {%- macro articleEnd(result) -%}
