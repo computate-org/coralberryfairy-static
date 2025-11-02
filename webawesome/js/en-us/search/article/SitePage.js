@@ -184,7 +184,7 @@ function suggestSitePageObjectSuggest($formFilters, $list, target) {
     if($list) {
       $list.innerHTML = '';
       data['list'].forEach((o, i) => {
-        var $i = document.querySelector('<i class="fa-light fa-newspaper"></i>');
+        var $i = document.querySelector('<i class="fa-thin fa-newspaper"></i>');
         var $span = document.createElement('span');        $span.setAttribute('class', '');        $span.innerText = o['objectTitle'];
         var $li = document.createElement('li');
         var $a = document.createElement('a').setAttribute('href', o['editPage']);
@@ -892,6 +892,70 @@ function putimportSitePageVals(json, target, success, error) {
     .catch(response => error(response, target));
 }
 
+// DELETE //
+
+async function deleteSitePage(target, pageId, success, error) {
+  if(success == null) {
+    success = function( data, textStatus, jQxhr ) {
+      addGlow(target, jqXhr);
+      var url = data['editPage'];
+      if(url)
+        window.location.href = url;
+    };
+  }
+  if(error == null) {
+    error = function( jqXhr, target2 ) {
+      addError(target, jqXhr);
+    };
+  }
+
+  fetch(
+    '/en-us/api/article/' + encodeURIComponent(pageId)
+    , {
+      headers: {'Content-Type':'application/json; charset=utf-8'}
+      , method: 'DELETE'
+    }).then(response => {
+      if(response.ok) {
+        success(response, target);
+      } else {
+        error(response, target);
+      }
+    })
+    .catch(response => error(response, target));
+}
+
+// DELETEFilter //
+
+async function deletefilterSitePage(target, success, error) {
+  if(success == null) {
+    success = function( data, textStatus, jQxhr ) {
+      addGlow(target, jqXhr);
+      var url = data['editPage'];
+      if(url)
+        window.location.href = url;
+    };
+  }
+  if(error == null) {
+    error = function( jqXhr, target2 ) {
+      addError(target, jqXhr);
+    };
+  }
+
+  fetch(
+    '/en-us/api/article'
+    , {
+      headers: {'Content-Type':'application/json; charset=utf-8'}
+      , method: 'DELETE'
+    }).then(response => {
+      if(response.ok) {
+        success(response, target);
+      } else {
+        error(response, target);
+      }
+    })
+    .catch(response => error(response, target));
+}
+
 async function websocketSitePage(success) {
   window.eventBus.onopen = function () {
 
@@ -917,7 +981,7 @@ async function websocketSitePage(success) {
       $header.setAttribute('class', 'w3-container fa- ');
       $header.setAttribute('id', 'header-' + pageId);
       var iTemplate = document.createElement('template');
-      iTemplate.innerHTML = '<i class="fa-light fa-newspaper"></i>';
+      iTemplate.innerHTML = '<i class="fa-thin fa-newspaper"></i>';
       var $i = iTemplate.content;
       var $headerSpan = document.createElement('span');
       $headerSpan.setAttribute('class', '');

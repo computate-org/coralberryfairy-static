@@ -393,8 +393,32 @@ Promise.all([
     document.querySelector('#putimportSitePageDialog').open = true;
   });
 
+  document.querySelector('#htmButton_deleteSitePage')?.addEventListener('click', (event) => {
+    var confirmResponse = confirm('Are you sure you want to delete that?'); 
+    if(confirmResponse) { 
+      var pageId =  event.currentTarget.getAttribute('data-pageId');
+      deleteSitePage(
+          event.currentTarget
+          , pageId
+          , function(response, target) { addGlow(target); }
+          , function(response, target) { addError(target); }
+          );
+    }
+  });
+
   document.querySelector('#htmButton_searchpageSitePage')?.addEventListener('click', (event) => {
     document.querySelector('#searchpageSitePageDialog').open = true;
+  });
+
+  document.querySelector('#htmButton_deletefilterSitePage')?.addEventListener('click', (event) => {
+    var confirmResponse = confirm('Are you sure you want to delete that?'); 
+    if(confirmResponse) { 
+      deletefilterSitePage(
+          event.currentTarget
+          , function(response, target) { addGlow(target); }
+          , function(response, target) { addError(target); }
+          );
+    }
   });
           document.querySelector('#fqSitePage_created')?.addEventListener('change', (event) => {
             fqChange('SitePage', event.currentTarget);
