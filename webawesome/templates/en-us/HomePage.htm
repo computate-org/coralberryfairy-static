@@ -1,72 +1,18 @@
 {% extends "en-us/PageLayout.htm" %}
 {% block htmTitlePageLayout %}
-		<title>Coralberry Fairy</title>
+    <title>Coralberry Fairy</title>
 {% endblock %}
 {% block htmBodyMiddlePageLayout %}
-        <div>
-          <h1>Coralberry Fairy</h1>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Dolls. Crafty Stuff.
-          </p>
+  <div class="doll-grid">
+{% for doll in topDolls %}
+    <div class="doll-grid-item no-tags">
+      <a class="doll-link wa-stack" href="{{ doll.displayPage }}">
+        <div class="doll-img">
+          <img src="{{ STATIC_BASE_URL }}{{ doll.pageImageUri }}" alt="{{ doll.name }}">
         </div>
+        <h3 class="text-center">{{ doll.name | e }}</h3>
+      </a>
+    </div>
+{% endfor %}
+  </div>
 {% endblock %}

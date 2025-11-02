@@ -1,61 +1,73 @@
 {% extends "search/doll/DollGenSearchPage.htm" %}
+{%- block htmBodyStartDollPage %}
+{%- endblock htmBodyStartDollPage %}
+{%- block websocketDollPage %}
+{%- endblock websocketDollPage %}
+{%- block htmScriptsDollPage %}
+    <script type="module">
+      function getUpdatedUrlWithSearchParams(labelName, add) {
+        const currentUrl = new URL(window.location.href);
+        const searchParams = currentUrl.searchParams;
+        if (add) {
+          searchParams.append('fq', 'labels:' + encodeURIComponent(labelName));
+        }
+        else {
+          searchParams.delete('fq', 'labels:' + encodeURIComponent(labelName));
+        }
+        return currentUrl.toString();
+      }
+      function updateDollGridAndBrowserUrl(url) {
+        window.history.replaceState({}, '', url);
+        fetch(url).then(response => {
+          response.text().then(responseText => {
+            var responseDocument = new DOMParser().parseFromString(responseText, "text/html");
+            document.querySelector(".doll-grid").replaceWith(responseDocument.querySelector(".doll-grid"));
+          });
+        });
+      }
+      document.querySelectorAll('.labelsFacet').forEach(checkbox => {
+        checkbox.addEventListener('change', (event) => {
+          const checkbox = event.target;
+          // if (checkbox.checked) {
+          const updatedUrl = getUpdatedUrlWithSearchParams(checkbox.getAttribute('data-label-name'), checkbox.checked)
+          updateDollGridAndBrowserUrl(updatedUrl)
+          // } else {
+          // }
+        });
+      });
+    </script>
+{%- endblock htmScriptsDollPage %}
+{%- block htmMenu %}
+  {% if varsFq.labels.facetField is defined %}
+  <div slot="menu">
+    current filters:
+    <div>
+      {% for facetLabel, facetCount in varsFq.labels.facetField.counts.items() %}
+      <wa-checkbox class="labelsFacet" id="labelsFacet-{{ facetLabel }}" data-label-name="{{ facetLabel | e }}">{{ facetLabel }} ({{ facetCount }})</wa-checkbox>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+{%- endblock htmMenu %}
 {%- block htmBodyMiddleDollPage %}
-{% if resultCount > 0 %}
-<img src="{{ STATIC_BASE_URL }}/product-images/dolls.jpg" alt="">
-              <div class="wa-stack wa-gap-0 ">
-{% include search/doll/DollPaginationButtons.htm %}
-                <div class="card-like-thing background-color-surface-border" id="site-results-grid">
-                  <div>
-              <wa-dropdown id="htmDropdown-name">
-                <wa-button variant="brand" slot="trigger" caret>name</wa-button>
-                <wa-menu>
-                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortDoll_name'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-Doll').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="asc" id="htmDropdown-name-asc">
-                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
-                    sort by name ascending
-                  </wa-menu-item>
-                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortDoll_name'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-Doll').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="desc" id="htmDropdown-name-desc">
-                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
-                    sort by name descending
-                  </wa-menu-item>
-                </wa-menu>
-              </wa-dropdown>
-              <wa-dropdown id="htmDropdown-description">
-                <wa-button variant="brand" slot="trigger" caret>product description</wa-button>
-                <wa-menu>
-                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortDoll_description'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-Doll').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="asc" id="htmDropdown-description-asc">
-                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
-                    sort by product description ascending
-                  </wa-menu-item>
-                  <wa-menu-item onclick="var e = document.querySelector('#pageFacetSortDoll_description'); e.value = this.getAttribute('data-order'); document.querySelectorAll('.pageSearchVal-pageSort-Doll').forEach(e => e.remove()); e.dispatchEvent(new Event('change', {})); " data-action="sort" data-order="desc" id="htmDropdown-description-desc">
-                    <i slot="start" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
-                    sort by product description descending
-                  </wa-menu-item>
-                </wa-menu>
-              </wa-dropdown>
-                  </div>
-                  {% for item in listDoll%}
-                  <div>
-              <a href="{{ item.displayPage }}">
-                <i class="{{ FONTAWESOME_STYLE }} fa-reel"></i>
-              <span>{{ item.name | e }}
-</span>              </a>
-              <a href="{{ item.displayPage }}">
-              <span>{{ item.description | e }}
-</span>              </a>
-                  </div>
-                  {% endfor %}
-              {% if getColumnName is defined %}
-                <div>
-                </div>
-              {% endif %}
-              {% if getColumnDescription is defined %}
-                <div>
-                </div>
-              {% endif %}
-                </div>
-{% include search/doll/DollPaginationButtons.htm %}
-              </div>
-            </div>
-          </div>
-{% endif %}
+  <div class="doll-grid{% if listDoll | length <= 2 %} main-content{%if listDoll | length == 1%} narrow-main-content{% endif %}{% endif %}">
+{% for doll in listDoll %}
+    <div class="doll-grid-item wa-stack wa-gap-s">
+      <a class="doll-link wa-stack" href="{{ doll.displayPage }}">
+        <div class="doll-img">
+          <img src="{{ STATIC_BASE_URL }}{{ doll.pageImageUri }}" alt="{{ doll.name }}">
+        </div>
+        <h3 class="text-center">{{ doll.name | e }}</h3>
+      </a>
+      <div class="wa-stack wa-gap-xs wa-align-items-center tag-section">
+        <h4 class="tags-header">TAGS</h4>
+        <div class="wa-cluster">
+          {% for label in doll.labels -%}
+          <a href="{{ SITE_BASE_URL }}/search/doll?fq=labels:{{ label | urlencode() }}">{{ label }}</a>
+          {%- endfor %}
+        </div>
+      </div>
+    </div>
+{% endfor %}
+  </div>
 {%- endblock htmBodyMiddleDollPage %}

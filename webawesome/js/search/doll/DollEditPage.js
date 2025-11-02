@@ -141,6 +141,27 @@ Promise.all([
             const valid = form.reportValidity();
           });
 
+          // PATCH labels
+          document.querySelector('#Page_labels')?.addEventListener('change', (event) => {
+            const form = document.querySelector('#PageForm_labels');
+            const valid = form.checkValidity();
+            if(valid) {
+              patchDollVal([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pageId:' + event.currentTarget.getAttribute('data-pageId') }]
+                  , 'setLabels', event.currentTarget.value.replace('[','').replace(']','').split(/[ ,]+/)
+                  , event.currentTarget
+                  , function(response, target) { addGlow(target); }
+                  , function(response, target) { addError(target); }
+                  );
+            }
+          });
+          document.querySelector('#Page_labels')?.addEventListener('focus', (event) => {
+            removeGlow(event.currentTarget);
+          });
+          document.querySelector('#Page_labels')?.addEventListener('blur', (event) => {
+            const form = document.querySelector('#PageForm_labels');
+            const valid = form.reportValidity();
+          });
+
           // PATCH pageId
           document.querySelector('#Page_pageId')?.addEventListener('change', (event) => {
             const form = document.querySelector('#PageForm_pageId');
@@ -372,27 +393,6 @@ Promise.all([
             const valid = form.reportValidity();
           });
 
-          // PATCH storeUrl
-          document.querySelector('#Page_storeUrl')?.addEventListener('change', (event) => {
-            const form = document.querySelector('#PageForm_storeUrl');
-            const valid = form.checkValidity();
-            if(valid) {
-              patchDollVal([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pageId:' + event.currentTarget.getAttribute('data-pageId') }]
-                  , 'setStoreUrl', event.currentTarget.value
-                  , event.currentTarget
-                , function(response, target) { addGlow(target); }
-                  , function(response, target) { addError(target); }
-                  );
-            }
-          });
-          document.querySelector('#Page_storeUrl')?.addEventListener('focus', (event) => {
-            removeGlow(event.currentTarget);
-          });
-          document.querySelector('#Page_storeUrl')?.addEventListener('blur', (event) => {
-            const form = document.querySelector('#PageForm_storeUrl');
-            const valid = form.reportValidity();
-          });
-
           // PATCH instagramUrl
           document.querySelector('#Page_instagramUrl')?.addEventListener('change', (event) => {
             const form = document.querySelector('#PageForm_instagramUrl');
@@ -477,24 +477,24 @@ Promise.all([
             const valid = form.reportValidity();
           });
 
-          // PATCH productNum
-          document.querySelector('#Page_productNum')?.addEventListener('change', (event) => {
-            const form = document.querySelector('#PageForm_productNum');
+          // PATCH labelsString
+          document.querySelector('#Page_labelsString')?.addEventListener('change', (event) => {
+            const form = document.querySelector('#PageForm_labelsString');
             const valid = form.checkValidity();
             if(valid) {
               patchDollVal([{ name: 'softCommit', value: 'true' }, { name: 'fq', value: 'pageId:' + event.currentTarget.getAttribute('data-pageId') }]
-                  , 'setProductNum', event.currentTarget.value
+                  , 'setLabelsString', event.currentTarget.value
                   , event.currentTarget
                 , function(response, target) { addGlow(target); }
                   , function(response, target) { addError(target); }
                   );
             }
           });
-          document.querySelector('#Page_productNum')?.addEventListener('focus', (event) => {
+          document.querySelector('#Page_labelsString')?.addEventListener('focus', (event) => {
             removeGlow(event.currentTarget);
           });
-          document.querySelector('#Page_productNum')?.addEventListener('blur', (event) => {
-            const form = document.querySelector('#PageForm_productNum');
+          document.querySelector('#Page_labelsString')?.addEventListener('blur', (event) => {
+            const form = document.querySelector('#PageForm_labelsString');
             const valid = form.reportValidity();
           });
 });

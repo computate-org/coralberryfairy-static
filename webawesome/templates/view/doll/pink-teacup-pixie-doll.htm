@@ -1,0 +1,34 @@
+{% extends "en-us/Doll.htm" %}
+{% block htmMetaPageLayout %}
+    <meta name="result.name" content="Pink Teacup Pixie Doll"/>
+    <meta name="result.description" content="Beautiful hand made pure wool felt pixie doll"/>
+    <meta name="result.instagramUrl" content="https://www.instagram.com/p/C-_X3wdPkyf"/>
+    <meta name="result.price" content="9999.00"/>
+    <meta name="result.created" content="2025-10-17T22:39:36.556[America/Denver]" />
+    <!-- <meta name="result.emailTemplate" content="/en-us/email/order-details.htm"/> -->
+
+    <meta name="result.pageId" content="{{ result.shortFileName }}"/>
+    <meta name="result.uri" content="/product/doll/{{ result.pageId }}"/>
+    <meta name="result.pageImageUri" content="/product-images/{{ result.pageId }}.jpg"/>
+    <meta name="result.title" content="{{ result.name }}"/>
+    <meta name="result.labelsString" content="pixie, teacup, pink"/>
+{% endblock htmMetaPageLayout %}
+{% block articleContent %}
+    {{ imageAndTitleAndDescription(result, result.name, result.description) }}
+        {{ startPCenter() }}
+          ✨💕 A fun little fairy doll project 💕✨ 
+        {{ endP() }}
+        {{ startP() }}
+          This tea cup size doll is a scaled down pattern of the gingermelongirl Pocket Poppet doll. She was fun to make! I'm trying to decide if she needs some wings too 🧚‍♀️✨💕
+        {{ endP() }}
+        {{ centeredActionGroupStart() }}
+          {{ dollBuyButton() }}
+          {{ price(result, result.price) }}
+        {{ centeredActionGroupEnd() }}
+        {{ centeredActionGroupStart() }}
+          {{ instagramButton(result, result.instagramUrl) }}
+        {{ centeredActionGroupEnd() }}
+        {{ hashtags() }}
+        {{ created() }}
+      {{ endDollImageAndSidebar() }}
+{% endblock %}

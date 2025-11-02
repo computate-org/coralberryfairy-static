@@ -1,0 +1,31 @@
+{% extends "en-us/Doll.htm" %}
+{% block htmMetaPageLayout %}
+    <meta name="result.name" content="Gingermelon Witch"/>
+    <meta name="result.description" content="Beautiful hand made pure wool felt witch"/>
+    <meta name="result.instagramUrl" content="https://www.instagram.com/p/CkWkbBCS8E3/"/>
+    <meta name="result.price" content="9999.00"/>
+    <meta name="result.created" content="2025-10-17T13:40:12.113[America/Denver]" />
+    <!-- <meta name="result.emailTemplate" content="/en-us/email/order-details.htm"/> -->
+
+    <meta name="result.pageId" content="{{ result.shortFileName }}"/>
+    <meta name="result.uri" content="/product/doll/{{ result.pageId }}"/>
+    <meta name="result.pageImageUri" content="/product-images/{{ result.pageId }}.jpg"/>
+    <meta name="result.title" content="{{ result.name }}"/>
+    <meta name="result.labelsString" content="pixie, witch, halloween, purple"/>
+{% endblock htmMetaPageLayout %}
+{% block articleContent %}
+    {{ imageAndTitleAndDescription(result, result.name, result.description) }}
+        {{ startP() }}
+        💜🖤 A cute little @gingermelongirl witch, just in time for Halloween 🎃 . That green face… love these patterns! 🖤💜
+        {{ endP() }}
+        {{ centeredActionGroupStart() }}
+          {{ dollBuyButton() }}
+          {{ price(result, result.price) }}
+        {{ centeredActionGroupEnd() }}
+        {{ centeredActionGroupStart() }}
+          {{ instagramButton(result, result.instagramUrl) }}
+        {{ centeredActionGroupEnd() }}
+        {{ hashtags() }}
+        {{ created() }}
+      {{ endDollImageAndSidebar() }}
+{% endblock %}

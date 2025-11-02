@@ -1,0 +1,31 @@
+{% extends "en-us/Doll.htm" %}
+{% block htmMetaPageLayout %}
+    <meta name="result.name" content="🤍👻 Ghostly Halloween pixie doll 👻🤍"/>
+    <meta name="result.description" content="Beautiful hand made pure wool felt pixie doll"/>
+    <meta name="result.instagramUrl" content="https://www.instagram.com/p/DBrXLF5PXCo/"/>
+    <meta name="result.price" content="9999.00"/>
+    <meta name="result.created" content="2025-10-18T12:40:36.431[America/Denver]" />
+    <!-- <meta name="result.emailTemplate" content="/en-us/email/order-details.htm"/> -->
+
+    <meta name="result.pageId" content="{{ result.shortFileName }}"/>
+    <meta name="result.uri" content="/product/doll/{{ result.pageId }}"/>
+    <meta name="result.pageImageUri" content="/product-images/{{ result.pageId }}.jpg"/>
+    <meta name="result.title" content="{{ result.name }}"/>
+    <meta name="result.labelsString" content="pixie, halloween, white"/>
+{% endblock htmMetaPageLayout %}
+{% block articleContent %}
+    {{ imageAndTitleAndDescription(result, result.name, result.description) }}
+        {{ startP() }}
+          She looks like a very friendly spirit to me! This tiny doll is a scaled down gingermelongirl Pocket Poppet doll pattern ✨🤍✨.
+        {{ endP() }}
+        {{ centeredActionGroupStart() }}
+          {{ dollBuyButton() }}
+          {{ price(result, result.price) }}
+        {{ centeredActionGroupEnd() }}
+        {{ centeredActionGroupStart() }}
+          {{ instagramButton(result, result.instagramUrl) }}
+        {{ centeredActionGroupEnd() }}
+        {{ hashtags() }}
+        {{ created() }}
+      {{ endDollImageAndSidebar() }}
+{% endblock %}

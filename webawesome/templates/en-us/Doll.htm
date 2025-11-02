@@ -1,0 +1,75 @@
+{% extends "en-us/PageLayout.htm" %}
+{%- macro dollCreatedDateTime(result) -%}
+      <wa-format-date weekday="short" month="short" day="numeric" year="numeric" hour="numeric" minute="numeric" second="numeric" date="{{ formatZonedDateTime(result.created, "yyyy-MM-dd'T'HH:mm:ss.SSSX", defaultLocaleId, "UTC") }}"></wa-format-date>
+{%- endmacro %}
+{%- macro dollCreatedRelativeTime(result) -%}
+      <wa-relative-time format="long" sync="true" date="{{ formatZonedDateTime(result.created, "yyyy-MM-dd'T'HH:mm:ss.SSSX", defaultLocaleId, "UTC") }}"></wa-relative-time>
+{%- endmacro %}
+{%- macro imageAndTitleAndDescription(result, title, description) -%}
+    <div class="main-content doll-image-and-stuff-grid">
+      <img src="{{ STATIC_BASE_URL }}{{ result.pageImageUri }}" alt="{{ result.name | e }}" />
+      <div class="margin-block-start-3xl">
+        <h3 class="text-center">{{ title | e }}</h3>
+        <h4 class="text-center">{{ description | e }}</h4>
+{%- endmacro %}
+{%- macro hashtags(result) -%}
+          {% if result.hashtagsList | length > 0 %}
+          <p class="wa-cluster hashtag-list">
+            {% for hashtag in result.hashtagsList %}
+            <a href="https://www.instagram.com/explore/tags/{{ hashtag }}/">#{{ hashtag }}</a>
+            {% endfor %}
+          </p>
+          {% endif %}
+{%- endmacro %}
+{%- macro startP(result) -%}
+        <p>
+{%- endmacro %}
+{%- macro startPCenter(result) -%}
+        <p class="text-center">
+{%- endmacro %}
+{%- macro endP(result) -%}
+        </p>
+{%- endmacro %}
+{%- macro centeredActionGroupStart(result) -%}
+          <p class="wa-cluster justify-content-center">
+{%- endmacro %}
+{%- macro centeredActionGroupEnd(result) -%}
+          </p>
+{%- endmacro %}
+{%- macro dollBuyButton(result) -%}
+            <wa-button variant="brand" appearance="filled">Buy this doll</wa-button>
+{%- endmacro %}
+{%- macro price(result, price) -%}
+            <span>${{ price | e }}</span>
+{%- endmacro %}
+{%- macro instagramButton(result, instagramUrl) -%}
+            <wa-button variant="brand" appearance="outlined" href="{{ instagramUrl }}" target="_blank">
+              <span class="wa-cluster wa-gap-2xs">
+                View on
+                <span class="wa-cluster" style="gap: .1ch;">
+                  <wa-icon family="brands" name="instagram" label="the instagram logo"></wa-icon>
+                  Instagram
+                </span>
+              </span>
+            </wa-button>
+{%- endmacro %}
+{%- macro created(result) -%}
+        <div class="margin-block-start-3xl wa-cluster justify-content-center">
+          <span>This doll was put on the site</span>
+          <span>{{ dollCreatedDateTime() }}</span>
+          <span>{{ dollCreatedRelativeTime() }}</span>
+        </div>
+{%- endmacro %}
+{%- macro endDollImageAndSidebar(result) -%}
+      </div>
+    </div>
+{%- endmacro %}
+{% block htmMetaPageLayout %}
+{% endblock htmMetaPageLayout %}
+{% block htmTitlePageLayout %}
+    <title>{{ title }}</title>
+{% endblock htmTitlePageLayout %}
+{% block htmBodyMiddlePageLayout %}
+{% block articleContent %}{% endblock %}
+{% endblock %}
+

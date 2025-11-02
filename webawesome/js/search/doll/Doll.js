@@ -49,6 +49,10 @@ function searchDollFilters($formFilters) {
     if(filterPageImageUri != null && filterPageImageUri !== '')
       filters.push({ name: 'fq', value: 'pageImageUri:' + filterPageImageUri });
 
+    var filterLabels = $formFilters.querySelector('.valueLabels')?.value;
+    if(filterLabels != null && filterLabels !== '')
+      filters.push({ name: 'fq', value: 'labels:' + filterLabels });
+
     var filterPageId = $formFilters.querySelector('.valuePageId')?.value;
     if(filterPageId != null && filterPageId !== '')
       filters.push({ name: 'fq', value: 'pageId:' + filterPageId });
@@ -129,10 +133,6 @@ function searchDollFilters($formFilters) {
     if(filterEmailTemplate != null && filterEmailTemplate !== '')
       filters.push({ name: 'fq', value: 'emailTemplate:' + filterEmailTemplate });
 
-    var filterStoreUrl = $formFilters.querySelector('.valueStoreUrl')?.value;
-    if(filterStoreUrl != null && filterStoreUrl !== '')
-      filters.push({ name: 'fq', value: 'storeUrl:' + filterStoreUrl });
-
     var filterInstagramUrl = $formFilters.querySelector('.valueInstagramUrl')?.value;
     if(filterInstagramUrl != null && filterInstagramUrl !== '')
       filters.push({ name: 'fq', value: 'instagramUrl:' + filterInstagramUrl });
@@ -149,9 +149,9 @@ function searchDollFilters($formFilters) {
     if(filterTitle != null && filterTitle !== '')
       filters.push({ name: 'fq', value: 'title:' + filterTitle });
 
-    var filterProductNum = $formFilters.querySelector('.valueProductNum')?.value;
-    if(filterProductNum != null && filterProductNum !== '')
-      filters.push({ name: 'fq', value: 'productNum:' + filterProductNum });
+    var filterLabelsString = $formFilters.querySelector('.valueLabelsString')?.value;
+    if(filterLabelsString != null && filterLabelsString !== '')
+      filters.push({ name: 'fq', value: 'labelsString:' + filterLabelsString });
   }
   return filters;
 }
@@ -312,6 +312,18 @@ async function patchDoll($formFilters, $formValues, target, pageId, success, err
   if(removePageImageUri != null && removePageImageUri !== '')
     vals['removePageImageUri'] = removePageImageUri;
 
+  var valueLabels = $formValues.querySelector('.valueLabels')?.value;
+  var removeLabels = $formValues.querySelector('.removeLabels')?.value === 'true';
+  var setLabels = removeLabels ? null : $formValues.querySelector('.setLabels')?.value;
+  var addLabels = $formValues.querySelector('.addLabels')?.value;
+  if(removeLabels || setLabels != null && setLabels !== '')
+    vals['setLabels'] = JSON.parse(setLabels);
+  if(addLabels != null && addLabels !== '')
+    vals['addLabels'] = addLabels;
+  var removeLabels = $formValues.querySelector('.removeLabels')?.value;
+  if(removeLabels != null && removeLabels !== '')
+    vals['removeLabels'] = removeLabels;
+
   var valuePageId = $formValues.querySelector('.valuePageId')?.value;
   var removePageId = $formValues.querySelector('.removePageId')?.value === 'true';
   var setPageId = removePageId ? null : $formValues.querySelector('.setPageId')?.value;
@@ -444,18 +456,6 @@ async function patchDoll($formFilters, $formValues, target, pageId, success, err
   if(removeEmailTemplate != null && removeEmailTemplate !== '')
     vals['removeEmailTemplate'] = removeEmailTemplate;
 
-  var valueStoreUrl = $formValues.querySelector('.valueStoreUrl')?.value;
-  var removeStoreUrl = $formValues.querySelector('.removeStoreUrl')?.value === 'true';
-  var setStoreUrl = removeStoreUrl ? null : $formValues.querySelector('.setStoreUrl')?.value;
-  var addStoreUrl = $formValues.querySelector('.addStoreUrl')?.value;
-  if(removeStoreUrl || setStoreUrl != null && setStoreUrl !== '')
-    vals['setStoreUrl'] = setStoreUrl;
-  if(addStoreUrl != null && addStoreUrl !== '')
-    vals['addStoreUrl'] = addStoreUrl;
-  var removeStoreUrl = $formValues.querySelector('.removeStoreUrl')?.value;
-  if(removeStoreUrl != null && removeStoreUrl !== '')
-    vals['removeStoreUrl'] = removeStoreUrl;
-
   var valueInstagramUrl = $formValues.querySelector('.valueInstagramUrl')?.value;
   var removeInstagramUrl = $formValues.querySelector('.removeInstagramUrl')?.value === 'true';
   var setInstagramUrl = removeInstagramUrl ? null : $formValues.querySelector('.setInstagramUrl')?.value;
@@ -504,17 +504,17 @@ async function patchDoll($formFilters, $formValues, target, pageId, success, err
   if(removeTitle != null && removeTitle !== '')
     vals['removeTitle'] = removeTitle;
 
-  var valueProductNum = $formValues.querySelector('.valueProductNum')?.value;
-  var removeProductNum = $formValues.querySelector('.removeProductNum')?.value === 'true';
-  var setProductNum = removeProductNum ? null : $formValues.querySelector('.setProductNum')?.value;
-  var addProductNum = $formValues.querySelector('.addProductNum')?.value;
-  if(removeProductNum || setProductNum != null && setProductNum !== '')
-    vals['setProductNum'] = setProductNum;
-  if(addProductNum != null && addProductNum !== '')
-    vals['addProductNum'] = addProductNum;
-  var removeProductNum = $formValues.querySelector('.removeProductNum')?.value;
-  if(removeProductNum != null && removeProductNum !== '')
-    vals['removeProductNum'] = removeProductNum;
+  var valueLabelsString = $formValues.querySelector('.valueLabelsString')?.value;
+  var removeLabelsString = $formValues.querySelector('.removeLabelsString')?.value === 'true';
+  var setLabelsString = removeLabelsString ? null : $formValues.querySelector('.setLabelsString')?.value;
+  var addLabelsString = $formValues.querySelector('.addLabelsString')?.value;
+  if(removeLabelsString || setLabelsString != null && setLabelsString !== '')
+    vals['setLabelsString'] = setLabelsString;
+  if(addLabelsString != null && addLabelsString !== '')
+    vals['addLabelsString'] = addLabelsString;
+  var removeLabelsString = $formValues.querySelector('.removeLabelsString')?.value;
+  if(removeLabelsString != null && removeLabelsString !== '')
+    vals['removeLabelsString'] = removeLabelsString;
 
   patchDollVals(pageId == null ? deparam(window.location.search ? window.location.search.substring(1) : window.location.search) : [{name:'fq', value:'pageId:' + pageId}], vals, target, success, error);
 }
@@ -557,6 +557,10 @@ function patchDollFilters($formFilters) {
     var filterPageImageUri = $formFilters.querySelector('.valuePageImageUri')?.value;
     if(filterPageImageUri != null && filterPageImageUri !== '')
       filters.push({ name: 'fq', value: 'pageImageUri:' + filterPageImageUri });
+
+    var filterLabels = $formFilters.querySelector('.valueLabels')?.value;
+    if(filterLabels != null && filterLabels !== '')
+      filters.push({ name: 'fq', value: 'labels:' + filterLabels });
 
     var filterPageId = $formFilters.querySelector('.valuePageId')?.value;
     if(filterPageId != null && filterPageId !== '')
@@ -638,10 +642,6 @@ function patchDollFilters($formFilters) {
     if(filterEmailTemplate != null && filterEmailTemplate !== '')
       filters.push({ name: 'fq', value: 'emailTemplate:' + filterEmailTemplate });
 
-    var filterStoreUrl = $formFilters.querySelector('.valueStoreUrl')?.value;
-    if(filterStoreUrl != null && filterStoreUrl !== '')
-      filters.push({ name: 'fq', value: 'storeUrl:' + filterStoreUrl });
-
     var filterInstagramUrl = $formFilters.querySelector('.valueInstagramUrl')?.value;
     if(filterInstagramUrl != null && filterInstagramUrl !== '')
       filters.push({ name: 'fq', value: 'instagramUrl:' + filterInstagramUrl });
@@ -658,9 +658,9 @@ function patchDollFilters($formFilters) {
     if(filterTitle != null && filterTitle !== '')
       filters.push({ name: 'fq', value: 'title:' + filterTitle });
 
-    var filterProductNum = $formFilters.querySelector('.valueProductNum')?.value;
-    if(filterProductNum != null && filterProductNum !== '')
-      filters.push({ name: 'fq', value: 'productNum:' + filterProductNum });
+    var filterLabelsString = $formFilters.querySelector('.valueLabelsString')?.value;
+    if(filterLabelsString != null && filterLabelsString !== '')
+      filters.push({ name: 'fq', value: 'labelsString:' + filterLabelsString });
   }
   return filters;
 }
@@ -736,6 +736,10 @@ async function postDoll($formValues, target, success, error) {
   if(valuePageImageUri != null && valuePageImageUri !== '')
     vals['pageImageUri'] = valuePageImageUri;
 
+  var valueLabels = $formValues.querySelector('.valueLabels')?.value;
+  if(valueLabels != null && valueLabels !== '')
+    vals['labels'] = JSON.parse(valueLabels);
+
   var valuePageId = $formValues.querySelector('.valuePageId')?.value;
   if(valuePageId != null && valuePageId !== '')
     vals['pageId'] = valuePageId;
@@ -780,10 +784,6 @@ async function postDoll($formValues, target, success, error) {
   if(valueEmailTemplate != null && valueEmailTemplate !== '')
     vals['emailTemplate'] = valueEmailTemplate;
 
-  var valueStoreUrl = $formValues.querySelector('.valueStoreUrl')?.value;
-  if(valueStoreUrl != null && valueStoreUrl !== '')
-    vals['storeUrl'] = valueStoreUrl;
-
   var valueInstagramUrl = $formValues.querySelector('.valueInstagramUrl')?.value;
   if(valueInstagramUrl != null && valueInstagramUrl !== '')
     vals['instagramUrl'] = valueInstagramUrl;
@@ -800,9 +800,9 @@ async function postDoll($formValues, target, success, error) {
   if(valueTitle != null && valueTitle !== '')
     vals['title'] = valueTitle;
 
-  var valueProductNum = $formValues.querySelector('.valueProductNum')?.value;
-  if(valueProductNum != null && valueProductNum !== '')
-    vals['productNum'] = valueProductNum;
+  var valueLabelsString = $formValues.querySelector('.valueLabelsString')?.value;
+  if(valueLabelsString != null && valueLabelsString !== '')
+    vals['labelsString'] = valueLabelsString;
 
   fetch(
     '/api/doll'
@@ -1018,6 +1018,7 @@ async function websocketDollInner(apiRequest) {
         var inputDescription = null;
         var inputPrice = null;
         var inputPageImageUri = null;
+        var inputLabels = null;
         var inputPageId = null;
         var inputDisplayPage = null;
         var inputClassCanonicalName = null;
@@ -1038,12 +1039,11 @@ async function websocketDollInner(apiRequest) {
         var inputPageImageType = null;
         var inputPageImageAlt = null;
         var inputEmailTemplate = null;
-        var inputStoreUrl = null;
         var inputInstagramUrl = null;
         var inputHashtags = null;
         var inputHashtagsList = null;
         var inputTitle = null;
-        var inputProductNum = null;
+        var inputLabelsString = null;
 
         if(vars.includes('created'))
           inputCreated = $response.querySelector('.Page_created');
@@ -1059,6 +1059,8 @@ async function websocketDollInner(apiRequest) {
           inputPrice = $response.querySelector('.Page_price');
         if(vars.includes('pageImageUri'))
           inputPageImageUri = $response.querySelector('.Page_pageImageUri');
+        if(vars.includes('labels'))
+          inputLabels = $response.querySelector('.Page_labels');
         if(vars.includes('pageId'))
           inputPageId = $response.querySelector('.Page_pageId');
         if(vars.includes('displayPage'))
@@ -1099,8 +1101,6 @@ async function websocketDollInner(apiRequest) {
           inputPageImageAlt = $response.querySelector('.Page_pageImageAlt');
         if(vars.includes('emailTemplate'))
           inputEmailTemplate = $response.querySelector('.Page_emailTemplate');
-        if(vars.includes('storeUrl'))
-          inputStoreUrl = $response.querySelector('.Page_storeUrl');
         if(vars.includes('instagramUrl'))
           inputInstagramUrl = $response.querySelector('.Page_instagramUrl');
         if(vars.includes('hashtags'))
@@ -1109,8 +1109,8 @@ async function websocketDollInner(apiRequest) {
           inputHashtagsList = $response.querySelector('.Page_hashtagsList');
         if(vars.includes('title'))
           inputTitle = $response.querySelector('.Page_title');
-        if(vars.includes('productNum'))
-          inputProductNum = $response.querySelector('.Page_productNum');
+        if(vars.includes('labelsString'))
+          inputLabelsString = $response.querySelector('.Page_labelsString');
 
         jsWebsocketDoll(pageId, vars, $response);
         window.result = JSON.parse($response.querySelector('.pageForm .result')?.value);
@@ -1185,6 +1185,16 @@ async function websocketDollInner(apiRequest) {
               item.textContent = inputPageImageUri.textContent;
           });
           addGlow(document.querySelector('.Page_pageImageUri'));
+        }
+
+        if(inputLabels) {
+          document.querySelectorAll('.Page_labels').forEach((item, index) => {
+            if(typeof item.value !== 'undefined')
+              item.value = inputLabels.getAttribute('value');
+            else
+              item.textContent = inputLabels.textContent;
+          });
+          addGlow(document.querySelector('.Page_labels'));
         }
 
         if(inputPageId) {
@@ -1387,16 +1397,6 @@ async function websocketDollInner(apiRequest) {
           addGlow(document.querySelector('.Page_emailTemplate'));
         }
 
-        if(inputStoreUrl) {
-          document.querySelectorAll('.Page_storeUrl').forEach((item, index) => {
-            if(typeof item.value !== 'undefined')
-              item.value = inputStoreUrl.getAttribute('value');
-            else
-              item.textContent = inputStoreUrl.textContent;
-          });
-          addGlow(document.querySelector('.Page_storeUrl'));
-        }
-
         if(inputInstagramUrl) {
           document.querySelectorAll('.Page_instagramUrl').forEach((item, index) => {
             if(typeof item.value !== 'undefined')
@@ -1437,14 +1437,14 @@ async function websocketDollInner(apiRequest) {
           addGlow(document.querySelector('.Page_title'));
         }
 
-        if(inputProductNum) {
-          document.querySelectorAll('.Page_productNum').forEach((item, index) => {
+        if(inputLabelsString) {
+          document.querySelectorAll('.Page_labelsString').forEach((item, index) => {
             if(typeof item.value !== 'undefined')
-              item.value = inputProductNum.getAttribute('value');
+              item.value = inputLabelsString.getAttribute('value');
             else
-              item.textContent = inputProductNum.textContent;
+              item.textContent = inputLabelsString.textContent;
           });
-          addGlow(document.querySelector('.Page_productNum'));
+          addGlow(document.querySelector('.Page_labelsString'));
         }
 
           pageGraphDoll();
